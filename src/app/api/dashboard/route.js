@@ -16,7 +16,13 @@ export async function GET() {
 
     await connectToDB();
 
-    const jobs = await Job.find({ clerkId: userId }).sort({ createdAt: -1 });
+    // Find the recruiter user by Clerk ID
+    const recruiter = await (await import('@/models/User')).default.findOne({ clerkId: userId });
+    if (!recruiter) {
+      return NextResponse.json([], { status: 200 });
+    }
+    // Find jobs where recruiter matches user _id
+    const jobs = await Job.find({ recruiter: recruiter._id }).sort({ createdAt: -1 });
 
     return NextResponse.json(jobs);
   } catch (error) {
@@ -27,3 +33,4 @@ export async function GET() {
     );
   }
 }
+// ALI RAZA

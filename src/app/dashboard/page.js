@@ -2,8 +2,7 @@
 "use client";
 import "antd/dist/reset.css";
 import { css } from '@emotion/css';
-import { Modal, Form, Input, Select, Checkbox, DatePicker, Button } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
+import JobPostModal from "@/components/JobPostModal";
 import dayjs from "dayjs";
 
 
@@ -21,7 +20,7 @@ import {
   Edit,
   Trash2,
   CheckCircle,
-  Clock,
+  Clock,  
   XCircle
 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -35,7 +34,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [showJobModal, setShowJobModal] = useState(false);
-  const [form] = Form.useForm();
+
 
   useEffect(() => {
     if (isLoaded && !user) {
@@ -152,23 +151,30 @@ export default function DashboardPage() {
 
 
 
-  const handleJobFormSubmit = async (values) => {
+  const handleJobFormSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    // Only recruiter (Clerk user ID) is sent, not userId
+    const recruiterId = user?.id || "";
+    const payload = {
+      jobTitle: formData.get('jobTitle'),
+      companyName: formData.get('companyName'),
+      companyLogo: formData.get('companyLogo'),
+      jobDescription: formData.get('jobDescription'),
+      jobType: formData.get('jobType'),
+      experienceLevel: formData.get('experienceLevel'),
+      category: formData.get('category'),
+      requiredSkills: formData.get('requiredSkills'),
+      location: formData.get('location'),
+      salaryMin: Number(formData.get('salaryMin')),
+      salaryMax: Number(formData.get('salaryMax')),
+      deadline: formData.get('deadline'),
+      isTestRequired: formData.get('isTestRequired') === 'on',
+      openings: formData.get('openings'),
+      contactEmail: formData.get('contactEmail'),
+      recruiter: recruiterId,
+    };
     try {
-      // Map form values to backend schema
-      const payload = {
-        title: values.title,
-        description: values.description,
-        company: values.company, // string
-        location: values.location,
-        type: values.type,
-        level: values.level,
-        category: Array.isArray(values.category) ? values.category[0] : values.category, // string
-        salaryRange: values.salaryRange || '',
-        skillsRequired: Array.isArray(values.skillsRequired) ? values.skillsRequired.join(', ') : (values.skillsRequired || ''),
-        testThreshold: values.testThreshold,
-        contactEmail: values.contactEmail,
-      };
-      console.log('Submitting job payload:', payload);
       const res = await fetch('/api/jobs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -177,7 +183,6 @@ export default function DashboardPage() {
       if (res.ok) {
         toast.success('Job posted successfully');
         setShowJobModal(false);
-        form.resetFields();
         fetchDashboardData();
       } else {
         const errorText = await res.text();
@@ -453,133 +458,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Job Posting Modal (Ant Design) */}
-        <Modal
-          open={showJobModal}
-          onCancel={() => setShowJobModal(false)}
-          footer={null}
-          width={1100}
-          closeIcon={<CloseOutlined style={{ color: '#fff', fontSize: 20 }} />}
-          bodyStyle={{ background: '#18181b', color: '#fff', borderRadius: 16, padding: 40 }}
-          style={{ top: 30 }}
-        >
-          <Form
-            form={form}
-            layout="horizontal"
-            onFinish={handleJobFormSubmit}
-            initialValues={{
-              type: 'Full-time',
-              level: 'Junior',
-            }}
-            style={{ display: 'flex', flexDirection: 'row', gap: 40, flexWrap: 'nowrap', alignItems: 'flex-start', justifyContent: 'center', width: '100%' }}
-            className={css`
-              .ant-input, .ant-select-selector, .ant-input-number, .ant-select-selection-item, .ant-select-selection-placeholder, .ant-input-affix-wrapper, .ant-picker-input > input {
-                background: #23272a !important;
-                color: #fff !important;
-                border: 1px solid #444 !important;
-                font-weight: bold;
-                font-size: 16px;
-              }
-              .ant-input::placeholder, .ant-select-selection-placeholder, .ant-input-number-input::placeholder {
-                color: #b0b0b0 !important;
-                opacity: 1 !important;
-              }
-              .ant-select-dropdown {
-                background: #23272a !important;
-                color: #fff !important;
-              }
-              .ant-select-item-option-content {
-                color: #fff !important;
-              }
-              .ant-input:focus, .ant-input-focused, .ant-select-focused .ant-select-selector, .ant-input-affix-wrapper-focused {
-                border-color: #2563eb !important;
-                box-shadow: 0 0 0 2px rgba(37,99,235,0.2) !important;
-              }
-              .ant-picker {
-                background: #23272a !important;
-                color: #fff !important;
-                border: 1px solid #444 !important;
-              }
-              .ant-picker-input > input {
-                color: #fff !important;
-              }
-              .ant-picker-dropdown {
-                background: #23272a !important;
-                color: #fff !important;
-              }
-            `}
-          >
-            <div style={{ flex: 1, minWidth: 340, display: 'flex', flexDirection: 'column', gap: 18 }}>
-              <Form.Item name="title" label="Job Title" rules={[{ required: true, message: 'Please enter job title' }]}> 
-                <Input placeholder="e.g. Frontend Developer (React)" style={{ background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16 }} />
-              </Form.Item>
-              <Form.Item name="company" label="Company Name" rules={[{ required: true, message: 'Please enter company name' }]}> 
-                <Input placeholder="e.g. TechBridge Solutions" style={{ background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16 }} />
-              </Form.Item>
-              <Form.Item name="companyLogo" label="Company Logo" valuePropName="fileList" getValueFromEvent={e => Array.isArray(e) ? e : e && e.fileList} extra="Optional">
-                <Input type="file" accept="image/*" style={{ background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16, padding: 8 }} />
-              </Form.Item>
-              <Form.Item name="contactEmail" label="Contact Email" rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}> 
-                <Input placeholder="For applicant replies or support" style={{ background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16 }} />
-              </Form.Item>
-              <Form.Item name="location" label="Location" rules={[{ required: true, message: 'Please enter location' }]}> 
-                <Input placeholder="e.g. Remote / On-site / Hybrid - Karachi" style={{ background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16 }} />
-              </Form.Item>
-              <Form.Item name="type" label="Job Type" rules={[{ required: true, message: 'Please select job type' }]}> 
-                <Select style={{ background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16 }}>
-                  <Select.Option value="Full-time">Full-time</Select.Option>
-                  <Select.Option value="Part-time">Part-time</Select.Option>
-                  <Select.Option value="Internship">Internship</Select.Option>
-                  <Select.Option value="Contract">Contract</Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item name="level" label="Experience Level" rules={[{ required: true, message: 'Please select level' }]}> 
-                <Select style={{ background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16 }}>
-                  <Select.Option value="Junior">Junior</Select.Option>
-                  <Select.Option value="Mid">Mid</Select.Option>
-                  <Select.Option value="Senior">Senior</Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item name="category" label="Category" rules={[{ required: true, message: 'Please enter category' }]}> 
-                <Select style={{ background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16 }} mode="tags" placeholder="Web Development, MERN Stack, WordPress, etc." />
-              </Form.Item>
-            </div>
-            <div style={{ flex: 1, minWidth: 340, display: 'flex', flexDirection: 'column', gap: 18 }}>
-              <Form.Item label="Salary Range (PKR)">
-                <Input.Group compact>
-                  <Form.Item name="salaryMin" noStyle rules={[{ required: true, message: 'Min salary required' }]}> 
-                    <Input type="number" min={0} placeholder="Min" style={{ width: 100, background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16 }} />
-                  </Form.Item>
-                  <Input style={{ width: 30, background: '#23272a', color: '#fff', border: 'none', pointerEvents: 'none' }} placeholder="-" disabled />
-                  <Form.Item name="salaryMax" noStyle rules={[{ required: true, message: 'Max salary required' }]}> 
-                    <Input type="number" min={0} placeholder="Max" style={{ width: 100, background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16 }} />
-                  </Form.Item>
-                  <Input style={{ width: 60, background: '#23272a', color: '#fff', border: 'none', pointerEvents: 'none' }} value="PKR" disabled />
-                </Input.Group>
-              </Form.Item>
-              <Form.Item name="skillsRequired" label="Required Skills"> 
-                <Select mode="tags" style={{ background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16 }} placeholder="React, Next.js, Tailwind, TypeScript, Figma" />
-              </Form.Item>
-              <Form.Item name="testRequired" label="Test Required?" valuePropName="checked">
-                <Checkbox style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Yes</Checkbox>
-              </Form.Item>
-              <Form.Item name="description" label="Job Description" rules={[{ required: true, message: 'Please enter job description' }]}> 
-                {/* Replace with a rich text editor like Quill or TinyMCE for production */}
-                <Input.TextArea rows={6} placeholder="Detailed overview of role, responsibilities" style={{ background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16 }} />
-              </Form.Item>
-              <Form.Item name="applicationDeadline" label="Application Deadline">
-                <DatePicker style={{ background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16, width: '100%' }} format="YYYY-MM-DD" />
-              </Form.Item>
-              <Form.Item name="openings" label="Number of Openings">
-                <Input type="number" min={1} placeholder="e.g. 3" style={{ background: '#23272a', color: '#fff', fontWeight: 'bold', fontSize: 16 }} />
-              </Form.Item>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'flex-end', gap: 18, flexBasis: '100%', marginTop: 24 }}>
-              <Button type="default" onClick={() => setShowJobModal(false)} style={{ padding: '12px 32px', background: '#23272a', color: '#fff', borderRadius: 6, fontWeight: 'bold', fontSize: 18, border: 'none' }}>Cancel</Button>
-              <Button type="primary" htmlType="submit" style={{ padding: '12px 32px', background: '#2563eb', color: '#fff', borderRadius: 6, fontWeight: 'bold', fontSize: 18, border: 'none' }}>Submit</Button>
-            </div>
-          </Form>
-        </Modal>
+        <JobPostModal open={showJobModal} onClose={() => setShowJobModal(false)} onSubmit={handleJobFormSubmit} recruiterId={user?.id || ''} />
       </div>
     </div>
   );
