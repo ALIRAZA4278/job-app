@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -9,15 +10,30 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.25.4",
+    "@emotion/css": "^11.13.5",
+    "@headlessui/react": "^2.2.4",
+    "@hookform/resolvers": "^5.1.1",
+    "antd": "^5.26.5",
+    "axios": "^1.10.0",
+    "dotenv": "^17.2.0",
+    "framer-motion": "^12.23.6",
+    "lucide-react": "^0.525.0",
+    "mongoose": "^8.16.4",
+    "next": "15.4.1",
+    "nodemailer": "^7.0.5",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.4.1"
+    "react-hook-form": "^7.60.0",
+    "react-hot-toast": "^2.5.2",
+    "svix": "^1.69.0",
+    "zod": "^4.0.5"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.4.1",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4"
   }
 }
