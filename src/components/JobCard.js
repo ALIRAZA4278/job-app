@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 export default function JobCard({ job, onApply, onBookmark }) {
   const getPostedAgo = (date) => {
@@ -16,15 +17,24 @@ export default function JobCard({ job, onApply, onBookmark }) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           {job.companyLogo ? (
-            <img
+            <Image
               src={job.companyLogo}
-              alt={job.companyName}
+              alt={job.companyName || 'Company Logo'}
+              width={56}
+              height={56}
               className="w-14 h-14 rounded-lg object-contain bg-gray-100"
+              onError={(e) => { e.target.src = '/file.svg'; }}
+              unoptimized
             />
           ) : (
-            <div className="w-14 h-14 rounded-lg flex items-center justify-center bg-gray-200 dark:bg-zinc-800 text-gray-500 font-bold text-xl">
-              {job.companyName?.[0] || '?'}
-            </div>
+            <Image
+              src={'/file.svg'}
+              alt={'Default Company Logo'}
+              width={56}
+              height={56}
+              className="w-14 h-14 rounded-lg object-contain bg-gray-100"
+              unoptimized
+            />
           )}
           <div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{job.jobTitle}</h2>
@@ -114,12 +124,12 @@ export default function JobCard({ job, onApply, onBookmark }) {
 
       {/* Action Buttons */}
       <div className="flex items-center justify-between mt-4">
-        <button
-          onClick={() => onApply?.(job)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition"
+        <a
+          href={`/jobs/${job._id}`}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition text-center"
         >
           Apply Now
-        </button>
+        </a>
 
         {typeof job.matchScore === 'number' && (
           <span className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-300 px-3 py-1 rounded-full text-xs font-medium">

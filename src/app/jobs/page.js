@@ -1,5 +1,8 @@
+
+
 "use client";
 
+import { Suspense } from "react";
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
@@ -8,7 +11,7 @@ import JobFilters from "@/components/JobFilters";
 import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 
-export default function JobsPage() {
+function JobsPageContent() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
@@ -53,7 +56,13 @@ export default function JobsPage() {
 
       if (response.ok) {
         setJobs(data.jobs);
-        setPagination(data.pagination);
+        // If pagination is missing, set default values
+        setPagination(data.pagination || {
+          page: 1,
+          limit: data.jobs ? data.jobs.length : 0,
+          total: data.jobs ? data.jobs.length : 0,
+          pages: 1
+        });
       } else {
         toast.error(data.error || "Failed to fetch jobs");
       }
@@ -132,7 +141,6 @@ export default function JobsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -197,7 +205,6 @@ export default function JobsPage() {
                 >
                   Previous
                 </button>
-                
                 {[...Array(pagination.pages)].map((_, index) => {
                   const page = index + 1;
                   return (
@@ -214,7 +221,6 @@ export default function JobsPage() {
                     </button>
                   );
                 })}
-                
                 <button
                   onClick={() => handlePageChange(pagination.page + 1)}
                   disabled={pagination.page === pagination.pages}
@@ -226,9 +232,15 @@ export default function JobsPage() {
             )}
           </>
         )}
-
-     
       </div>
     </div>
+  );
+}
+
+export default function JobsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <JobsPageContent />
+    </Suspense>
   );
 }

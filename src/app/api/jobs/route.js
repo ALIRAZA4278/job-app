@@ -28,6 +28,7 @@ export async function POST(request) {
       });
     }
     const job = await Job.create({
+      userId: body.userId || '',
       jobTitle: body.jobTitle,
       companyName: body.companyName,
       companyLogo: body.companyLogo,
@@ -35,7 +36,7 @@ export async function POST(request) {
       jobType: body.jobType,
       experienceLevel: body.experienceLevel,
       category: body.category,
-      requiredSkills: body.requiredSkills ? body.requiredSkills.split(',').map(s => s.trim()) : [],
+      requiredSkills: Array.isArray(body.requiredSkills) ? body.requiredSkills : [],
       location: body.location,
       salaryMin: body.salaryMin,
       salaryMax: body.salaryMax,

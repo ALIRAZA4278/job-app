@@ -2,6 +2,7 @@
 import mongoose from 'mongoose';
 
 const JobSchema = new mongoose.Schema({
+  userId: { type: String, required: true }, // Clerk user ID
   jobTitle: { type: String, required: true },
   companyName: { type: String, required: true },
   companyLogo: { type: String }, // URL from Cloudinary or UploadThing

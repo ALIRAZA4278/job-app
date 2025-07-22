@@ -26,6 +26,7 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      // Add more hosts here if needed
     ],
   },
 };

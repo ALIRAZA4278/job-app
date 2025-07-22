@@ -9,9 +9,8 @@ export async function GET(request, context) {
   try {
     await connectToDB();
 
-    const { params } = context;
-    const job = await Job.findById(params.id)
-      .populate("createdBy", "name email company");
+    const params = await context.params;
+    const job = await Job.findById(params.id);
 
     if (!job) {
       return NextResponse.json(
@@ -23,7 +22,31 @@ export async function GET(request, context) {
     // Increment view count
     await Job.findByIdAndUpdate(params.id, { $inc: { views: 1 } });
 
-    return NextResponse.json(job);
+    // Map backend fields to frontend expectations
+    const mappedJob = {
+      _id: job._id,
+      jobTitle: job.jobTitle,
+      companyName: job.companyName,
+      companyLogo: job.companyLogo,
+      jobDescription: job.jobDescription,
+      jobType: job.jobType,
+      experienceLevel: job.experienceLevel,
+      category: job.category,
+      requiredSkills: job.requiredSkills,
+      location: job.location,
+      salaryMin: job.salaryMin,
+      salaryMax: job.salaryMax,
+      deadline: job.deadline,
+      isTestRequired: job.isTestRequired,
+      openings: job.openings,
+      contactEmail: job.contactEmail,
+      recruiter: job.recruiter,
+      applications: job.applications,
+      createdAt: job.createdAt,
+      views: job.views || 0,
+    };
+
+    return NextResponse.json(mappedJob);
   } catch (error) {
     console.error("Error fetching job:", error);
     return NextResponse.json(

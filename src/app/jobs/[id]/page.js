@@ -63,16 +63,25 @@ export default function JobDetailPage() {
   const handleApplyForm = async (values) => {
     setApplying(true);
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
+      const res = await fetch("/api/apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
-          subject: `New Application for ${job?.title}`,
+          subject: `New Application for ${job?.jobTitle}`,
           from_name: values.name,
           from_email: values.email,
           to: job?.company?.email || job?.recruiterEmail || "",
-          message: `A new job application has been received.\n\nJob Title: ${job?.title}\nJob ID: ${job?._id}\n\nApplicant Name: ${values.name}\nApplicant Email: ${values.email}\n\nCover Letter: ${values.coverLetter || ''}`,
+          message:
+            `A new job application has been received.\n\n` +
+            `Job Title: ${job?.jobTitle}\nJob ID: ${job?._id}\n` +
+            `Applicant Name: ${values.name}\n` +
+            `Applicant Email: ${values.email}\n` +
+            `Phone: ${values.phone || ''}\n` +
+            `Skills: ${values.skills || ''}\n` +
+            `Resume: ${values.resume || ''}\n` +
+            `Bio: ${values.bio || ''}\n` +
+            `Education: ${values.education || ''}\n` +
+            `Cover Letter: ${values.coverLetter || ''}`,
         }),
       });
       const data = await res.json();
@@ -83,7 +92,7 @@ export default function JobDetailPage() {
         setShowConfirmation(true);
         form.resetFields();
       } else {
-        toast.error(data.message || "Failed to send application");
+        toast.error(data.error || "Failed to send application");
       }
     } catch (error) {
       toast.error("Failed to send application");
@@ -91,23 +100,6 @@ export default function JobDetailPage() {
       setApplying(false);
     }
   };
-      {/* Confirmation Modal */}
-      <Modal
-        open={showConfirmation}
-        onCancel={() => setShowConfirmation(false)}
-        footer={null}
-        title="Application Submitted"
-      >
-        {submittedData && (
-          <div>
-            <p style={{ marginBottom: 12 }}>Thank you for applying! Here are your submitted details:</p>
-            <div style={{ marginBottom: 8 }}><strong>Name:</strong> {submittedData.name}</div>
-            <div style={{ marginBottom: 8 }}><strong>Email:</strong> {submittedData.email}</div>
-            <div style={{ marginBottom: 8 }}><strong>Cover Letter:</strong></div>
-            <div style={{ background: '#f3f4f6', padding: 12, borderRadius: 6, whiteSpace: 'pre-wrap' }}>{submittedData.coverLetter}</div>
-          </div>
-        )}
-      </Modal>
 
   const formatSalary = (salary, salaryRange) => {
     if (salary && typeof salary === 'object') {
@@ -178,10 +170,10 @@ export default function JobDetailPage() {
             <div className="bg-white rounded-lg shadow-md p-6 mb-6">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-start space-x-4">
-                  {job.company.logo && (
+                  {job.companyLogo && (
                     <Image
-                      src={job.company.logo}
-                      alt={job.company.name}
+                      src={job.companyLogo}
+                      alt={job.companyName}
                       width={64}
                       height={64}
                       className="rounded-lg"
@@ -189,24 +181,23 @@ export default function JobDetailPage() {
                   )}
                   <div>
                     <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                      {job.title}
+                      {job.jobTitle}
                     </h1>
                     <p className="text-lg text-gray-600 mb-2">
-                      {job.company.name}
+                      {job.companyName}
                     </p>
                     <div className="flex flex-wrap gap-4 text-sm text-gray-500">
                       <span className="flex items-center">
                         <MapPin className="h-4 w-4 mr-1" />
                         {job.location}
-                        {job.remote && <span className="ml-1 text-green-600">(Remote)</span>}
                       </span>
                       <span className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
-                        {job.type.replace('-', ' ')}
+                        {job.jobType ? job.jobType.replace('-', ' ') : 'N/A'}
                       </span>
                       <span className="flex items-center">
                         <DollarSign className="h-4 w-4 mr-1" />
-                        {formatSalary(job.salary, job.salaryRange)}
+                         {job.salaryMin?.toLocaleString()} - {job.salaryMax?.toLocaleString()}
                       </span>
                       <span className="flex items-center">
                         <Eye className="h-4 w-4 mr-1" />
@@ -215,7 +206,6 @@ export default function JobDetailPage() {
                     </div>
                   </div>
                 </div>
-                
                 <div className="flex items-center space-x-2">
                   <button className="p-2 text-gray-500 hover:text-blue-600 transition-colors">
                     <Share2 className="h-5 w-5" />
@@ -225,9 +215,8 @@ export default function JobDetailPage() {
                   </button>
                 </div>
               </div>
-
               <div className="flex flex-wrap gap-2 mb-6">
-                {job.skills.map((skill, index) => (
+                {Array.isArray(job.requiredSkills) && job.requiredSkills.map((skill, index) => (
                   <span 
                     key={index}
                     className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full"
@@ -236,123 +225,120 @@ export default function JobDetailPage() {
                   </span>
                 ))}
               </div>
-
               <div className="prose max-w-none">
                 <h2 className="text-xl font-semibold mb-4">Job Description</h2>
                 <div className="whitespace-pre-wrap text-gray-700 mb-6">
-                  {job.description}
+                  {job.jobDescription}
                 </div>
-
-                {job.requirements && job.requirements.length > 0 && (
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-3">Requirements</h3>
-                    <ul className="list-disc pl-6 space-y-1">
-                      {job.requirements.map((req, index) => (
-                        <li key={index} className="text-gray-700">{req}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {job.benefits && job.benefits.length > 0 && (
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-3">Benefits</h3>
-                    <ul className="list-disc pl-6 space-y-1">
-                      {job.benefits.map((benefit, index) => (
-                        <li key={index} className="text-gray-700">{benefit}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                {/* Add requirements/benefits if you add those fields to the schema */}
               </div>
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h3 className="text-lg font-semibold mb-4">Apply for this job</h3>
-              
-              {job.applicationMethod === 'external' ? (
-                <a
-                  href={job.externalUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
-                >
-                  Apply on Company Website
-                  <ExternalLink className="h-4 w-4 ml-2" />
-                </a>
-              ) : (
+              {/* Apply Now Button */}
+              <div className="mt-8 flex justify-end">
                 <Button
                   type="primary"
+                  style={{ background: '#2563eb', color: '#fff' }}
                   onClick={handleApply}
-                  disabled={applying}
-                  style={{ width: "100%", background: "#2563eb", color: "#fff" }}
                 >
                   Apply Now
                 </Button>
-              )}
-      {/* Application Modal */}
-      <Modal
-        open={showApplyModal}
-        onCancel={() => setShowApplyModal(false)}
-        footer={null}
-        title={`Apply for ${job?.title}`}
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleApplyForm}
-        >
-          <Form.Item
-            name="name"
-            label="Your Name"
-            rules={[{ required: true, message: "Please enter your name" }]}
-            initialValue={user?.fullName || ""}
-          >
-            <Input placeholder="Enter your name" />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label="Your Email"
-            rules={[{ required: true, type: "email", message: "Please enter a valid email" }]}
-            initialValue={user?.primaryEmailAddress?.emailAddress || ""}
-          >
-            <Input placeholder="Enter your email" />
-          </Form.Item>
-          <Form.Item
-            name="coverLetter"
-            label="Cover Letter"
-            rules={[{ required: true, message: "Please enter a cover letter" }]}
-          >
-            <Input.TextArea rows={5} placeholder="Write your cover letter here..." />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={applying} style={{ width: "100%", background: "#2563eb", color: "#fff" }}>
-              Submit Application
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-              
-              {!user && (
-                <p className="text-sm text-gray-500 mt-2">
-                  You must be signed in to apply for jobs
-                </p>
-              )}
+              </div>
+              {/* Application Modal */}
+              <Modal
+                open={showApplyModal}
+                onCancel={() => setShowApplyModal(false)}
+                footer={null}
+                title={`Apply for ${job.jobTitle}`}
+              >
+                <Form
+                  form={form}
+                  layout="vertical"
+                  onFinish={handleApplyForm}
+                  encType="multipart/form-data"
+                >
+                  <Form.Item
+                    name="clerkId"
+                    label="Clerk User ID"
+                    initialValue={user?.id || ''}
+                  >
+                    <Input disabled />
+                  </Form.Item>
+                  <Form.Item
+                    name="name"
+                    label="Your Name"
+                    rules={[{ required: true, message: "Please enter your name" }]}
+                    initialValue={user?.fullName || ""}
+                  >
+                    <Input placeholder="Enter your name" />
+                  </Form.Item>
+                  <Form.Item
+                    name="email"
+                    label="Your Email"
+                    rules={[{ required: true, type: "email", message: "Please enter a valid email" }]}
+                    initialValue={user?.primaryEmailAddress?.emailAddress || ""}
+                  >
+                    <Input placeholder="Enter your email" />
+                  </Form.Item>
+                  <Form.Item
+                    name="phone"
+                    label="Phone Number"
+                    rules={[{ required: true, message: "Please enter your phone number" }]}
+                  >
+                    <Input placeholder="Enter your phone number" />
+                  </Form.Item>
+                  <Form.Item
+                    name="skills"
+                    label="Skills (comma separated)"
+                    rules={[{ required: true, message: "Please enter your skills" }]}
+                  >
+                    <Input placeholder="e.g. React, Node.js, MongoDB" />
+                  </Form.Item>
+                  <Form.Item
+                    name="resume"
+                    label="Resume (PDF, DOC, DOCX)"
+                    rules={[{ required: true, message: "Please upload your resume" }]}
+                    valuePropName="fileList"
+                  >
+                    <Input type="file" accept=".pdf,.doc,.docx" />
+                  </Form.Item>
+                  <Form.Item
+                    name="bio"
+                    label="Bio"
+                  >
+                    <Input.TextArea rows={3} placeholder="Short bio about yourself" />
+                  </Form.Item>
+                  <Form.Item
+                    name="education"
+                    label="Education"
+                  >
+                    <Input placeholder="Your education" />
+                  </Form.Item>
+                  <Form.Item
+                    name="coverLetter"
+                    label="Cover Letter"
+                    rules={[{ required: true, message: "Please enter a cover letter" }]}
+                  >
+                    <Input.TextArea rows={5} placeholder="Write your cover letter here..." />
+                  </Form.Item>
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit" loading={applying} style={{ width: "100%", background: "#2563eb", color: "#fff" }}>
+                      Submit Application
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Modal>
             </div>
-
+                     
+            
             <div className="bg-white rounded-lg shadow-md p-6">
               <h3 className="text-lg font-semibold mb-4">Job Details</h3>
               <div className="space-y-3">
                 <div>
                   <span className="text-sm text-gray-500">Job Type</span>
-                  <p className="font-medium">{job.type.replace('-', ' ')}</p>
+                  <p className="font-medium">{job.jobType ? job.jobType.replace('-', ' ') : 'N/A'}</p>
                 </div>
                 <div>
                   <span className="text-sm text-gray-500">Experience Level</span>
-                  <p className="font-medium">{job.level}</p>
+                  <p className="font-medium">{job.experienceLevel || 'N/A'}</p>
                 </div>
                 <div>
                   <span className="text-sm text-gray-500">Category</span>
@@ -371,8 +357,12 @@ export default function JobDetailPage() {
               </div>
             </div>
           </div>
+      
+
+
         </div>
       </div>
     </div>
+     
   );
 }
