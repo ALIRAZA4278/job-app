@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import "dotenv/config";
 import User from '../src/models/User.js';
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://aliraza:jobappzainali@job-app.ajs92ll.mongodb.net/";
+const MONGODB_URI = process.env.MONGODB_URI || 
 
 async function run() {
   await mongoose.connect(MONGODB_URI);
