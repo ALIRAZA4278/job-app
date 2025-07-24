@@ -3,12 +3,16 @@ import { headers } from "next/headers";
 import { Webhook } from "svix";
 import connectToDB from "@/lib/mongodb";
 import User from "@/models/User";
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config({ path: ".env" });
 
 const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
 
 export async function POST(request) {
   if (!webhookSecret) {
-    throw new Error("Please add CLERK_WEBHOOK_SECRET from Clerk Dashboard to .env.local");
+    throw new Error("Please add CLERK_WEBHOOK_SECRET from Clerk Dashboard to .env");
   }
 
   // Get the headers

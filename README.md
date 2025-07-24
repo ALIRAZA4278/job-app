@@ -38,7 +38,7 @@ A full-stack job posting platform built with Next.js, MongoDB, and Clerk authent
    npm install
    ```
 
-3. Set up environment variables in `.env.local`:
+3. Set up environment variables in `.env`:
    ```env
    # Clerk Authentication
    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
@@ -62,13 +62,13 @@ A full-stack job posting platform built with Next.js, MongoDB, and Clerk authent
    - Create a MongoDB Atlas account
    - Create a new cluster
    - Get your connection string
-   - Add it to your `.env.local` file
+   - Add it to your `.env` file
 
 2. **Clerk Setup**:
    - Create a Clerk account at [clerk.dev](https://clerk.dev)
    - Create a new application
    - Get your publishable key and secret key
-   - Add them to your `.env.local` file
+   - Add them to your `.env` file
 
 3. **First Run**:
    - The application will automatically create the necessary database collections

@@ -2,10 +2,9 @@
 // Usage: node scripts/seed.js
 
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import "dotenv/config";
 
-// Load environment variables
-dotenv.config({ path: '.env.local' });
+
 
 // Import models (adjust paths if needed)
 import '../src/models/Job.js';
@@ -241,11 +240,35 @@ async function seedDatabase() {
       console.log('Created sample recruiter');
     }
 
-    // Add recruiter to all sample jobs
-    const jobsWithRecruiter = sampleJobs.map(job => ({
-      ...job,
-      recruiter: sampleRecruiter._id
-    }));
+
+    // Normalize all sample jobs to match Job schema fields
+    const jobsWithRecruiter = sampleJobs.map(job => {
+      // Fallbacks for alternate field names
+      return {
+        jobTitle: job.jobTitle || job.title || 'Untitled',
+        jobDescription: job.jobDescription || job.description || '',
+        companyName: job.companyName || (job.company && job.company.name) || 'Unknown',
+        companyLogo: job.companyLogo || (job.company && job.company.logo) || '',
+        jobType: job.jobType || job.type || 'Full-time',
+        experienceLevel: job.experienceLevel || job.level || 'entry',
+        category: job.category || '',
+        requiredSkills: job.requiredSkills || job.skills || [],
+        location: job.location || '',
+        salaryMin: job.salaryMin || (job.salary && job.salary.min) || 0,
+        salaryMax: job.salaryMax || (job.salary && job.salary.max) || 0,
+        deadline: job.deadline || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        isTestRequired: job.isTestRequired || false,
+        openings: job.openings || 1,
+        contactEmail: job.contactEmail || 'hr@example.com',
+        createdAt: job.createdAt || new Date(),
+        benefits: job.benefits || [],
+        remote: job.remote || false,
+        urgent: job.urgent || false,
+        status: job.status || 'active',
+        recruiter: sampleRecruiter._id,
+        userId: 'user_30KAKDkXzbkV25kqPoMRaRIuSgg',
+      };
+    });
 
     // Insert sample jobs
     const createdJobs = await Job.insertMany(jobsWithRecruiter);
