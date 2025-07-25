@@ -338,7 +338,8 @@ function JobsPageContent() {
                           : 'text-gray-600 hover:text-gray-900'
                       }`}
                     >
-                      <Grid3X3 className="w-4 h-4" />
+                       <List className="w-4 h-4" />
+                     
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
@@ -348,7 +349,7 @@ function JobsPageContent() {
                           : 'text-gray-600 hover:text-gray-900'
                       }`}
                     >
-                      <List className="w-4 h-4" />
+                      <Grid3X3 className="w-4 h-4" />
                     </button>
                   </div>
 
