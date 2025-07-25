@@ -3,6 +3,7 @@ import "antd/dist/reset.css";
 import { css } from '@emotion/css';
 import JobPostModal from "@/components/JobPostModal";
 import dayjs from "dayjs";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
@@ -31,7 +32,13 @@ import {
   Filter,
   Download,
   Share2,
-  MoreVertical
+  MoreVertical,
+  ArrowUpRight,
+  Zap,
+  Target,
+  Award,
+  Heart,
+  BookOpen
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -251,167 +258,338 @@ export default function DashboardPage() {
 
   if (!isLoaded || !user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      <div className="min-h-screen bg-gray-50">
         <Navbar />
         <div className="flex justify-center items-center py-20">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <motion.div
+            
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full"
+          />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
-        <div className="mb-12">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-2">
-                Welcome back, {user.firstName}! ✨
-              </h1>
-              <p className="text-black text-lg">
-                Ready to take your career to the next level?
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Modern Tabs */}
-        <div className="mb-8">
-          <div className="flex space-x-2 text-black       bg-white/60 backdrop-blur-sm rounded-2xl p-2 border border-white/20">
-            {[
-              { id: "overview", label: "Overview", icon: TrendingUp },
-              { id: "applications", label: "Applications", icon: FileText },
-              { id: "jobs", label: "My Jobs", icon: Briefcase },
-              { id: "profile", label: "Profile", icon: User }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center px-6 py-3 rounded-xl font-medium transition-allte text-white   ${
-                  activeTab === tab.id
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                    : "  hover:bg-white/50"
-                }`}
-              >
-                <tab.icon className="h-4 w-4 mr-2" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Tab Content */}
-        {activeTab === "overview" && (
-          <div className="space-y-8">
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { 
-                  label: "Total Applications", 
-                  value: applications.length, 
-                  icon: FileText, 
-                  gradient: "from-blue-500 to-cyan-500",
-                  change: "+12%"
-                },
-                { 
-                  label: "In Review", 
-                  value: applications.filter(app => app.status === 'reviewing').length, 
-                  icon: Eye, 
-                  gradient: "from-green-500 to-emerald-500",
-                  change: "+8%"
-                },
-                { 
-                  label: "Interviews", 
-                  value: applications.filter(app => app.status === 'interview').length, 
-                  icon: Users, 
-                  gradient: "from-purple-500 to-pink-500",
-                  change: "+24%"
-                },
-                { 
-                  label: "My Jobs", 
-                  value: jobs.length, 
-                  icon: Briefcase, 
-                  gradient: "from-orange-500 to-red-500",
-                  change: "+5%"
-                }
-              ].map((stat, index) => (
-                <div key={index} className="group relative overflow-hidden">
-                  <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <p className="text-sm font-medium text-black mb-1">{stat.label}</p>
-                        <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
-                        <div className="flex items-center mt-2">
-                          <span className="text-sm text-green-600 font-medium">{stat.change}</span>
-                          <span className="text-xs text-black ml-1">vs last month</span>
-                        </div>
-                      </div>
-                      <div className={`p-3 rounded-xl bg-gradient-to-r ${stat.gradient} shadow-lg`}>
-                        <stat.icon className="h-6 w-6 text-white" />
-                      </div>
-                    </div>
-                  </div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
+        >
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                  <span className="text-white font-bold text-xl">
+                    {user.firstName?.[0]}{user.lastName?.[0]}
+                  </span>
                 </div>
-              ))}
-            </div>
-
-            {/* Quick Actions */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <button onClick={() => setShowJobModal(true)} className="flex items-center justify-center p-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all">
-                  <Plus className="h-5 w-5 mr-2" />
-                  Post New Job
-                </button>
-                <button className="flex items-center justify-center p-6 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl hover:shadow-lg transition-all">
-                  <Search className="h-5 w-5 mr-2" />
-                  Find Candidates
-                </button>
-                <button className="flex items-center justify-center p-6 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:shadow-lg transition-all">
-                  <Star className="h-5 w-5 mr-2" />
-                  Upgrade Plan
-                </button>
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900">
+                    Welcome back, {user.firstName}! 👋
+                  </h1>
+                  <p className="text-gray-600 text-lg mt-1">
+                    Ready to manage your career journey?
+                  </p>
+                </div>
+              </div>
+              <div className="hidden md:flex items-center space-x-3">
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-all duration-200 shadow-md"
+                  onClick={() => setShowJobModal(true)}
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Post Job</span>
+                </motion.button>
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-3 bg-gray-100 text-gray-600 rounded-xl hover:bg-gray-200 transition-all duration-200"
+                >
+                  <Bell className="h-4 w-4" />
+                </motion.button>
               </div>
             </div>
           </div>
-        )}
+        </motion.div>
+
+        {/* Modern Tabs */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mb-8"
+        >
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-2">
+            <div className="flex space-x-1">
+              {[
+                { id: "overview", label: "Overview", icon: TrendingUp },
+                { id: "applications", label: "Applications", icon: FileText },
+                { id: "jobs", label: "My Jobs", icon: Briefcase },
+                { id: "profile", label: "Profile", icon: User }
+              ].map((tab, index) => (
+                <motion.button
+                  key={tab.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                    activeTab === tab.id
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "text-black hover:bg-gray-100"
+                  }`}
+                >
+                  <tab.icon className="h-4 w-4 mr-2" />
+                  {tab.label}
+                </motion.button>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Tab Content */}
+        <AnimatePresence mode="wait">
+          {activeTab === "overview" && (
+            <motion.div
+              key="overview"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-8"
+            >
+              {/* Stats Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  { 
+                    label: "Total Applications", 
+                    value: applications.length, 
+                    icon: FileText, 
+                    gradient: "from-blue-500 to-blue-600",
+                    change: "+12%",
+                    trend: "up"
+                  },
+                  { 
+                    label: "In Review", 
+                    value: applications.filter(app => app.status === 'reviewing').length, 
+                    icon: Eye, 
+                    gradient: "from-emerald-500 to-emerald-600",
+                    change: "+8%",
+                    trend: "up"
+                  },
+                  { 
+                    label: "Interviews", 
+                    value: applications.filter(app => app.status === 'interview').length, 
+                    icon: Users, 
+                    gradient: "from-purple-500 to-purple-600",
+                    change: "+24%",
+                    trend: "up"
+                  },
+                  { 
+                    label: "My Jobs", 
+                    value: jobs.length, 
+                    icon: Briefcase, 
+                    gradient: "from-orange-500 to-orange-600",
+                    change: "+5%",
+                    trend: "up"
+                  }
+                ].map((stat, index) => (
+                  <motion.div 
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    className="group"
+                  >
+                    <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-gray-600 mb-1">{stat.label}</p>
+                          <p className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</p>
+                          <div className="flex items-center">
+                            <span className="text-sm text-emerald-600 font-medium">{stat.change}</span>
+                            <span className="text-xs text-gray-500 ml-1">vs last month</span>
+                          </div>
+                        </div>
+                        <div className={`p-3 rounded-xl bg-gradient-to-r ${stat.gradient} shadow-lg`}>
+                          <stat.icon className="h-6 w-6 text-white" />
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Quick Actions */}
+              <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                <h3 className="text-xl font-bold text-gray-900 mb-6">Quick Actions</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[
+                    {
+                      title: "Post New Job",
+                      description: "Create a new job posting",
+                      icon: Plus,
+                      gradient: "from-blue-500 to-blue-600",
+                      action: () => setShowJobModal(true)
+                    },
+                    {
+                      title: "Find Candidates",
+                      description: "Search for potential candidates",
+                      icon: Search,
+                      gradient: "from-purple-500 to-purple-600",
+                      action: () => {}
+                    },
+                    {
+                      title: "Analytics",
+                      description: "View detailed reports",
+                      icon: TrendingUp,
+                      gradient: "from-emerald-500 to-emerald-600",
+                      action: () => {}
+                    }
+                  ].map((action, index) => (
+                    <motion.button
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: index * 0.1 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={action.action}
+                      className={`p-6 bg-gradient-to-r ${action.gradient} text-white rounded-xl hover:shadow-lg transition-all duration-300 text-left group`}
+                    >
+                      <div className="flex items-center justify-between mb-3">
+                        <action.icon className="h-6 w-6" />
+                        <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                      <h4 className="font-semibold mb-1">{action.title}</h4>
+                      <p className="text-sm opacity-90">{action.description}</p>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Recent Activity */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-lg font-bold text-gray-900 mb-4">Recent Applications</h3>
+                  <div className="space-y-3">
+                    {applications.slice(0, 3).map((app, index) => (
+                      <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                          <Briefcase className="h-4 w-4 text-blue-600" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-gray-900 truncate">{app.jobTitle}</p>
+                          <p className="text-sm text-gray-500">{app.companyName}</p>
+                        </div>
+                        <div className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(app.status)} text-white`}>
+                          {app.status}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-lg font-bold text-gray-900 mb-4">Performance Insights</h3>
+                  <div className="space-y-4">
+                    {[
+                      { label: "Profile Views", value: "234", change: "+12%", icon: Eye },
+                      { label: "Application Rate", value: "78%", change: "+5%", icon: Target },
+                      { label: "Response Time", value: "2.4h", change: "-15%", icon: Zap }
+                    ].map((insight, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <insight.icon className="h-4 w-4 text-purple-600" />
+                          </div>
+                          <span className="font-medium text-gray-900">{insight.label}</span>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-gray-900">{insight.value}</p>
+                          <p className="text-xs text-emerald-600">{insight.change}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {activeTab === "applications" && (
-          <div className="space-y-6">
+          <motion.div
+            key="applications"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-6"
+          >
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-gray-900">My Applications</h2>
               <div className="flex items-center space-x-3">
-                <button className="flex items-center px-4 py-2 bg-white/70 backdrop-blur-sm rounded-xl hover:bg-white transition-all">
-                  <Filter className="h-4 w-4 mr-2" />
-                  Filter
-                </button>
+                <motion.button 
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-all duration-200"
+                >
+                  <Filter className="h-4 w-4 mr-2 text-gray-600" />
+                  <span className="text-gray-700">Filter</span>
+                </motion.button>
               </div>
             </div>
 
             <div className="grid gap-6">
               {applications.length === 0 ? (
-                <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-12 text-center border border-white/20">
-                  <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-black text-lg">No applications yet</p>
-                  <p className="text-black">Start applying to jobs to see them here!</p>
-                </div>
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-white rounded-2xl p-12 text-center border border-gray-200"
+                >
+                  <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <FileText className="h-8 w-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No applications yet</h3>
+                  <p className="text-gray-600 mb-6">Start applying to jobs to see them here!</p>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+                  >
+                    Browse Jobs
+                  </motion.button>
+                </motion.div>
               ) : (
-                applications.map((application) => (
-                  <div key={application._id} className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:shadow-xl transition-all">
+                applications.map((application, index) => (
+                  <motion.div 
+                    key={application._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-lg transition-all duration-300"
+                  >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-start space-x-4">
-                          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+                          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
                             <Briefcase className="h-6 w-6 text-white" />
                           </div>
-                          <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-gray-900">{application.jobTitle}</h3>
-                            <p className="text-black">{application.companyName}</p>
-                            <div className="flex items-center space-x-4 mt-2 text-sm text-black">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-1">{application.jobTitle}</h3>
+                            <p className="text-gray-600 mb-3">{application.companyName}</p>
+                            <div className="flex items-center space-x-4 text-sm text-gray-500">
                               <span className="flex items-center">
                                 <MapPin className="h-4 w-4 mr-1" />
                                 {application.location}
@@ -424,55 +602,89 @@ export default function DashboardPage() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-3 flex-shrink-0">
                         <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium text-white ${getStatusColor(application.status)}`}>
                           {getStatusIcon(application.status)}
                           <span className="ml-1 capitalize">{application.status}</span>
                         </div>
-                        <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                        <motion.button 
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
                           <MoreVertical className="h-4 w-4 text-gray-400" />
-                        </button>
+                        </motion.button>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))
               )}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {activeTab === "jobs" && (
-          <div className="space-y-6">
+          <motion.div
+            key="jobs"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-6"
+          >
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-gray-900">My Jobs</h2>
-              <button 
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setShowJobModal(true)} 
-                className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-lg transition-all"
+                className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 shadow-md"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Post New Job
-              </button>
+              </motion.button>
             </div>
 
             <div className="grid gap-6">
               {jobs.length === 0 ? (
-                <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-12 text-center border border-white/20">
-                  <Briefcase className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-black text-lg">No jobs posted yet</p>
-                  <p className="text-black">Create your first job posting to get started!</p>
-                </div>
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-white rounded-2xl p-12 text-center border border-gray-200"
+                >
+                  <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Briefcase className="h-8 w-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No jobs posted yet</h3>
+                  <p className="text-gray-600 mb-6">Create your first job posting to get started!</p>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowJobModal(true)}
+                    className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+                  >
+                    Post Your First Job
+                  </motion.button>
+                </motion.div>
               ) : (
-                jobs.map((job) => (
-                  <div key={job._id} className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:shadow-xl transition-all">
+                jobs.map((job, index) => (
+                  <motion.div 
+                    key={job._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-lg transition-all duration-300"
+                  >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-start space-x-4">
-                          <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-xl flex items-center justify-center">
+                          <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center flex-shrink-0">
                             <Briefcase className="h-6 w-6 text-white" />
                           </div>
-                          <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-gray-900">{job.title}</h3>
-                            <div className="flex items-center space-x-4 mt-2 text-sm text-black">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-1">{job.jobTitle || job.title}</h3>
+                            <p className="text-gray-600 mb-3">{job.companyName}</p>
+                            <div className="flex items-center space-x-4 text-sm text-gray-500 mb-3">
                               <span className="flex items-center">
                                 <MapPin className="h-4 w-4 mr-1" />
                                 {job.location}
@@ -484,100 +696,228 @@ export default function DashboardPage() {
                               {job.salaryMin && job.salaryMax && (
                                 <span className="flex items-center">
                                   <DollarSign className="h-4 w-4 mr-1" />
-                                  ${job.salaryMin.toLocaleString()} - ${job.salaryMax.toLocaleString()}
+                                  PKR {job.salaryMin.toLocaleString()} - {job.salaryMax.toLocaleString()}
                                 </span>
                               )}
                             </div>
-                            <div className="flex items-center mt-3">
-                              <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
+                            <div className="flex items-center space-x-3">
+                              <span className="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
                                 {job.applications?.length || 0} applications
+                              </span>
+                              <span className="bg-emerald-100 text-emerald-800 text-xs font-medium px-3 py-1 rounded-full">
+                                Active
                               </span>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-2">
-                      
-                       
-                        <button 
+                      <div className="flex items-center space-x-2 flex-shrink-0">
+                        <motion.button 
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => handleViewJob(job._id)}
+                          className="p-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors group"
+                          title="View Job"
+                        >
+                          <Eye className="h-4 w-4 text-blue-600" />
+                        </motion.button>
+                        <motion.button 
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => handleEditJob(job._id)}
+                          className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors group"
+                          title="Edit Job"
+                        >
+                          <Edit className="h-4 w-4 text-gray-600" />
+                        </motion.button>
+                        <motion.button 
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
                           onClick={() => handleDeleteJob(job._id)}
-                          className="p-2 bg-gray-100 hover:bg-red-100 rounded-lg transition-colors"
+                          className="p-2 bg-red-100 hover:bg-red-200 rounded-lg transition-colors group"
+                          title="Delete Job"
                         >
                           <Trash2 className="h-4 w-4 text-red-600" />
-                        </button>
+                        </motion.button>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))
               )}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {activeTab === "profile" && (
-          <div className="max-w-2xl">
-            <div className="bg-white/70 text-black backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-              <div className="flex items-center space-x-6 mb-8">
-                <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center">
-                  <span className="text-white font-bold text-2xl">
-                    {user.firstName?.[0]}{user.lastName?.[0]}
-                  </span>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{user.fullName}</h2>
-                  <p className="text-black">{user.primaryEmailAddress?.emailAddress}</p>
-                  <button className="mt-2 text-sm text-blue-600 hover:text-blue-700">Change Avatar</button>
+          <motion.div
+            key="profile"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="max-w-4xl"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Profile Info */}
+              <div className="lg:col-span-2">
+                <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Profile Information</h2>
+                  
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                        <input
+                          type="text"
+                          defaultValue={user.firstName}
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                        <input
+                          type="text"
+                          defaultValue={user.lastName}
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                      <input
+                        type="email"
+                        defaultValue={user.primaryEmailAddress?.emailAddress}
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                      <select className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900">
+                        <option value="job_seeker">Job Seeker</option>
+                        <option value="recruiter">Recruiter</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Professional Bio</label>
+                      <textarea
+                        rows={4}
+                        placeholder="Tell us about your professional background, skills, and career goals..."
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none text-gray-900 placeholder-black"
+                      ></textarea>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                        <input
+                          type="text"
+                          placeholder="City, Country"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 placeholder-black"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                        <input
+                          type="tel"
+                          placeholder="+1 (555) 123-4567"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 placeholder-black"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-4 pt-4">
+                      <motion.button 
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-all duration-200 font-medium"
+                      >
+                        Save Changes
+                      </motion.button>
+                      <motion.button 
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 font-medium"
+                      >
+                        Cancel
+                      </motion.button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
+              {/* Profile Sidebar */}
               <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-black mb-2">Full Name</label>
-                    <input
-                      type="text"
-                      defaultValue={user.fullName}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-black"
-                    />
+                {/* Profile Picture */}
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm text-center">
+                  <div className="w-24 h-24 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <span className="text-white font-bold text-2xl">
+                      {user.firstName?.[0]}{user.lastName?.[0]}
+                    </span>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-black mb-2">Email</label>
-                    <input
-                      type="email"
-                      defaultValue={user.primaryEmailAddress?.emailAddress}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-black"
-                    />
+                  <h3 className="text-lg font-semibold text-gray-900">{user.fullName}</h3>
+                  <p className="text-gray-600 text-sm mb-4">{user.primaryEmailAddress?.emailAddress}</p>
+                  <motion.button 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                  >
+                    Change Photo
+                  </motion.button>
+                </div>
+
+                {/* Account Stats */}
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Stats</h3>
+                  <div className="space-y-4">
+                    {[
+                      { label: "Profile Views", value: "1,234", icon: Eye, color: "text-blue-600" },
+                      { label: "Applications", value: applications.length, icon: FileText, color: "text-emerald-600" },
+                      { label: "Jobs Posted", value: jobs.length, icon: Briefcase, color: "text-purple-600" },
+                      { label: "Success Rate", value: "78%", icon: Target, color: "text-orange-600" }
+                    ].map((stat, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div className={`p-2 bg-gray-100 rounded-lg`}>
+                            <stat.icon className={`h-4 w-4 ${stat.color}`} />
+                          </div>
+                          <span className="text-gray-700 text-sm">{stat.label}</span>
+                        </div>
+                        <span className="font-semibold text-gray-900">{stat.value}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-black mb-2">Role</label>
-                  <select className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-black">
-                    <option value="job_seeker">Job Seeker</option>
-                    <option value="recruiter">Recruiter</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-black mb-2">Bio</label>
-                  <textarea
-                    rows={4}
-                    placeholder="Tell us about yourself..."
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none text-black placeholder-gray-400"
-                  ></textarea>
-                </div>
-
-                <div className="flex items-center space-x-4">
-                  <button className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all">
-                    Save Changes
-                  </button>
-                  <button className="px-6 py-3 bg-gray-100 text-black rounded-xl hover:bg-gray-200 transition-all">
-                    Cancel
-                  </button>
+                {/* Quick Settings */}
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Settings</h3>
+                  <div className="space-y-3">
+                    {[
+                      { label: "Email Notifications", enabled: true },
+                      { label: "Job Alerts", enabled: true },
+                      { label: "Profile Visibility", enabled: false },
+                      { label: "Two-Factor Auth", enabled: false }
+                    ].map((setting, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <span className="text-gray-700 text-sm">{setting.label}</span>
+                        <button className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+                          setting.enabled ? 'bg-blue-600' : 'bg-gray-200'
+                        }`}>
+                          <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${
+                            setting.enabled ? 'translate-x-5' : 'translate-x-1'
+                          }`} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
 
         <JobPostModal
