@@ -7,6 +7,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import JobCard from "@/components/JobCard";
 import JobFilters from "@/components/JobFilters";
 import { 
@@ -493,6 +494,7 @@ function JobsPageContent() {
           </>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

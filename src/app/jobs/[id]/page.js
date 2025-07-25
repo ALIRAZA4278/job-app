@@ -7,6 +7,7 @@ import { useAuth, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import "dotenv/config";
 import {
   MapPin,
@@ -452,6 +453,7 @@ export default function JobDetailPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

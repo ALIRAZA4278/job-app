@@ -6,6 +6,7 @@ import { Building2, MapPin, Users, Briefcase, ExternalLink, Search, Filter, X, C
 import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export default function CompaniesPage() {
   const [companies, setCompanies] = useState([]);
@@ -597,6 +598,7 @@ export default function CompaniesPage() {
           </motion.div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

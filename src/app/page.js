@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Search, Briefcase, Users, TrendingUp, ArrowRight, CheckCircle, Star, Globe, Shield, Zap } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
@@ -32,7 +33,7 @@ export default function Home() {
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-32 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
           <div className="absolute -bottom-32 -left-40 w-80 h-80 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
@@ -81,15 +82,15 @@ export default function Home() {
               {/* Trust indicators */}
               <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500">
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                  <CheckCircle className="w-5 h-5 text-blue-500 mr-2" />
                   1M+ Job Seekers
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                  <CheckCircle className="w-5 h-5 text-blue-500 mr-2" />
                   50K+ Companies
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                  <CheckCircle className="w-5 h-5 text-blue-500 mr-2" />
                   100% Secure
                 </div>
               </div>
@@ -109,7 +110,7 @@ export default function Home() {
                       <h4 className="font-semibold text-gray-900">Senior Developer</h4>
                       <p className="text-sm text-gray-500">TechCorp • Remote</p>
                     </div>
-                    <div className="text-green-600 font-semibold">$120k</div>
+                    <div className="text-blue-600 font-semibold">$120k</div>
                   </div>
                   
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
@@ -120,27 +121,27 @@ export default function Home() {
                       <h4 className="font-semibold text-gray-900">Product Manager</h4>
                       <p className="text-sm text-gray-500">StartupXYZ • New York</p>
                     </div>
-                    <div className="text-green-600 font-semibold">$140k</div>
+                    <div className="text-blue-600 font-semibold">$140k</div>
                   </div>
                   
                   <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg border-2 border-blue-200">
-                    <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center">
                       <TrendingUp className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900">UI/UX Designer</h4>
                       <p className="text-sm text-gray-500">Design Studio • Remote</p>
                     </div>
-                    <div className="text-green-600 font-semibold">$95k</div>
+                    <div className="text-blue-600 font-semibold">$95k</div>
                   </div>
                 </div>
                 
                 {/* Floating elements */}
-                <div className="absolute -top-4 -right-4 w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                <div className="absolute -top-4 -right-4 w-16 h-16 bg-indigo-400 rounded-full flex items-center justify-center shadow-lg animate-bounce">
                   <Star className="w-8 h-8 text-white" />
                 </div>
                 
-                <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-pink-400 rounded-full flex items-center justify-center shadow-lg">
+                <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center shadow-lg">
                   <CheckCircle className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -357,13 +358,13 @@ export default function Home() {
             </div>
             
             <div className="text-center group">
-              <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group-hover:border-green-200">
-                <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-700 mb-2">
+              <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group-hover:border-indigo-200">
+                <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-700 mb-2">
                   5K+
                 </div>
                 <div className="text-gray-600 font-medium">Companies</div>
-                <div className="w-full h-2 bg-green-100 rounded-full mt-3 overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full animate-pulse"></div>
+                <div className="w-full h-2 bg-indigo-100 rounded-full mt-3 overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full animate-pulse"></div>
                 </div>
               </div>
             </div>
@@ -381,13 +382,13 @@ export default function Home() {
             </div>
             
             <div className="text-center group">
-              <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group-hover:border-orange-200">
-                <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-700 mb-2">
+              <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group-hover:border-blue-200">
+                <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700 mb-2">
                   95%
                 </div>
                 <div className="text-gray-600 font-medium">Success Rate</div>
-                <div className="w-full h-2 bg-orange-100 rounded-full mt-3 overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full animate-pulse"></div>
+                <div className="w-full h-2 bg-blue-100 rounded-full mt-3 overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full animate-pulse"></div>
                 </div>
               </div>
             </div>
@@ -396,7 +397,7 @@ export default function Home() {
           {/* Trust badges */}
           <div className="mt-16 flex flex-wrap items-center justify-center gap-8 opacity-60">
             <div className="flex items-center space-x-2">
-              <Shield className="w-5 h-5 text-green-600" />
+              <Shield className="w-5 h-5 text-blue-600" />
               <span className="text-sm font-medium text-gray-700">Verified Companies</span>
             </div>
             <div className="flex items-center space-x-2">
@@ -404,7 +405,7 @@ export default function Home() {
               <span className="text-sm font-medium text-gray-700">Secure Platform</span>
             </div>
             <div className="flex items-center space-x-2">
-              <Star className="w-5 h-5 text-yellow-500" />
+              <Star className="w-5 h-5 text-indigo-500" />
               <span className="text-sm font-medium text-gray-700">5-Star Rated</span>
             </div>
           </div>
@@ -431,7 +432,7 @@ export default function Home() {
             
             <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
               Ready to Take the Next Step in Your
-              <span className="block text-yellow-300">Career Journey?</span>
+              <span className="block text-blue-300">Career Journey?</span>
             </h2>
             
             <p className="text-xl text-blue-100 mb-12 leading-relaxed max-w-2xl mx-auto">
@@ -460,15 +461,15 @@ export default function Home() {
             {/* Additional CTA elements */}
             <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-white/80">
               <div className="flex items-center space-x-2">
-                <CheckCircle className="w-5 h-5 text-green-400" />
+                <CheckCircle className="w-5 h-5 text-blue-400" />
                 <span className="text-sm">100% Free to Join</span>
               </div>
               <div className="flex items-center space-x-2">
-                <CheckCircle className="w-5 h-5 text-green-400" />
+                <CheckCircle className="w-5 h-5 text-blue-400" />
                 <span className="text-sm">No Hidden Fees</span>
               </div>
               <div className="flex items-center space-x-2">
-                <CheckCircle className="w-5 h-5 text-green-400" />
+                <CheckCircle className="w-5 h-5 text-blue-400" />
                 <span className="text-sm">Instant Access</span>
               </div>
             </div>
@@ -476,53 +477,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <Briefcase className="h-6 w-6" />
-                <span className="text-xl font-bold">JobBoard</span>
-              </div>
-              <p className="text-gray-400">
-                Your trusted partner in finding the perfect job opportunity.
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-semibold mb-4">For Job Seekers</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/jobs" className="hover:text-white">Browse Jobs</Link></li>
-                <li><Link href="/dashboard" className="hover:text-white">My Applications</Link></li>
-                <li><Link href="/profile" className="hover:text-white">My Profile</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-semibold mb-4">For Employers</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/dashboard" className="hover:text-white">Post Jobs</Link></li>
-                <li><Link href="/dashboard" className="hover:text-white">Manage Jobs</Link></li>
-                <li><Link href="/dashboard" className="hover:text-white">View Applications</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/about" className="hover:text-white">About Us</Link></li>
-                <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
-                <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 JobBoard. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

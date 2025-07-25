@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { 
   User, 
   Briefcase, 
@@ -929,6 +930,7 @@ export default function DashboardPage() {
           editJob={editJob}
         />
       </div>
+      <Footer />
     </div>
   );
 }
