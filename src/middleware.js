@@ -12,7 +12,7 @@ export default clerkMiddleware((auth, req) => {
     const { userId } = auth();
     if (!userId) {
       // Not authenticated, redirect to sign-in
-      return Response.redirect('/https://.accounts.dev/sign-in');
+      return Response.redirect('https://accounts.dev/sign-in');
     }
   }
 });
