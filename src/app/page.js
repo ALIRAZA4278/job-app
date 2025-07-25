@@ -163,24 +163,24 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="relative">
                 {/* Quality Jobs Illustration */}
-                <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-3xl p-8 relative overflow-hidden">
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 relative overflow-hidden">
                   <div className="relative z-10">
-                    <div className="w-full h-64 bg-gradient-to-br from-red-100 to-orange-100 rounded-2xl flex items-center justify-center relative">
+                    <div className="w-full h-64 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center relative">
                       {/* Computer Screen */}
                       <div className="bg-gray-800 rounded-lg p-3 w-48 h-32 relative">
                         <div className="bg-white rounded-md h-full flex flex-col">
-                          <div className="bg-red-500 h-2 rounded-t-md"></div>
+                          <div className="bg-blue-600 h-2 rounded-t-md"></div>
                           <div className="flex-1 p-2 space-y-1">
                             <div className="bg-gray-200 h-2 rounded w-3/4"></div>
                             <div className="bg-gray-200 h-2 rounded w-1/2"></div>
-                            <div className="bg-red-200 h-2 rounded w-2/3"></div>
+                            <div className="bg-blue-200 h-2 rounded w-2/3"></div>
                           </div>
                         </div>
                       </div>
                       {/* Person Figure */}
                       <div className="absolute right-4 bottom-4">
                         <div className="w-8 h-8 bg-gray-700 rounded-full"></div>
-                        <div className="w-6 h-12 bg-blue-600 rounded-lg mx-auto mt-1"></div>
+                        <div className="w-6 h-12 bg-purple-600 rounded-lg mx-auto mt-1"></div>
                         <div className="flex space-x-1 mt-1">
                           <div className="w-2 h-6 bg-gray-700 rounded"></div>
                           <div className="w-2 h-6 bg-gray-700 rounded"></div>
@@ -188,16 +188,16 @@ export default function Home() {
                       </div>
                       {/* Magnifying Glass */}
                       <div className="absolute top-4 left-4">
-                        <div className="w-12 h-12 border-4 border-red-500 rounded-full relative">
-                          <div className="absolute -bottom-2 -right-2 w-4 h-1 bg-red-500 rounded rotate-45"></div>
+                        <div className="w-12 h-12 border-4 border-blue-600 rounded-full relative">
+                          <div className="absolute -bottom-2 -right-2 w-4 h-1 bg-blue-600 rounded rotate-45"></div>
                         </div>
                       </div>
                     </div>
                   </div>
                   {/* Decorative elements */}
-                  <div className="absolute top-4 right-4 w-8 h-8 bg-red-400 rounded-full opacity-30"></div>
-                  <div className="absolute bottom-6 left-6 w-6 h-6 bg-orange-400 rounded-full opacity-40"></div>
-                  <div className="absolute top-12 right-12 w-4 h-4 bg-red-300 rounded-full opacity-50"></div>
+                  <div className="absolute top-4 right-4 w-8 h-8 bg-blue-400 rounded-full opacity-30"></div>
+                  <div className="absolute bottom-6 left-6 w-6 h-6 bg-indigo-400 rounded-full opacity-40"></div>
+                  <div className="absolute top-12 right-12 w-4 h-4 bg-blue-300 rounded-full opacity-50"></div>
                 </div>
               </div>
               
@@ -213,19 +213,19 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="lg:order-2 relative">
                 {/* Easy Applications Illustration */}
-                <div className="bg-gradient-to-br from-pink-50 to-red-50 rounded-3xl p-8 relative overflow-hidden">
+                <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-3xl p-8 relative overflow-hidden">
                   <div className="relative z-10">
-                    <div className="w-full h-64 bg-gradient-to-br from-pink-100 to-red-100 rounded-2xl flex items-center justify-center relative">
+                    <div className="w-full h-64 bg-gradient-to-br from-purple-100 to-blue-100 rounded-2xl flex items-center justify-center relative">
                       {/* Mobile Phone */}
                       <div className="bg-gray-800 rounded-xl p-2 w-32 h-56 relative">
                         <div className="bg-white rounded-lg h-full flex flex-col">
-                          <div className="bg-red-500 h-8 rounded-t-lg flex items-center justify-center">
+                          <div className="bg-purple-600 h-8 rounded-t-lg flex items-center justify-center">
                             <div className="w-2 h-2 bg-white rounded-full"></div>
                           </div>
                           <div className="flex-1 p-2 space-y-2">
                             {[1,2,3,4,5].map((item) => (
                               <div key={item} className="flex items-center space-x-2">
-                                <div className="w-4 h-4 bg-pink-300 rounded-full"></div>
+                                <div className="w-4 h-4 bg-blue-300 rounded-full"></div>
                                 <div className="flex-1 space-y-1">
                                   <div className="bg-gray-200 h-1 rounded w-full"></div>
                                   <div className="bg-gray-100 h-1 rounded w-2/3"></div>
@@ -233,7 +233,7 @@ export default function Home() {
                               </div>
                             ))}
                           </div>
-                          <div className="bg-red-500 h-6 rounded-b-lg flex items-center justify-center">
+                          <div className="bg-purple-600 h-6 rounded-b-lg flex items-center justify-center">
                             <div className="w-3 h-3 bg-white rounded-full"></div>
                           </div>
                         </div>
@@ -241,7 +241,7 @@ export default function Home() {
                       {/* Person with phone */}
                       <div className="absolute right-8 bottom-8">
                         <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
-                        <div className="w-8 h-16 bg-red-500 rounded-lg mx-auto mt-1 relative">
+                        <div className="w-8 h-16 bg-blue-600 rounded-lg mx-auto mt-1 relative">
                           <div className="absolute -right-2 top-2 w-3 h-6 bg-gray-800 rounded"></div>
                         </div>
                         <div className="flex space-x-1 mt-1">
@@ -250,14 +250,14 @@ export default function Home() {
                         </div>
                       </div>
                       {/* Floating icons */}
-                      <div className="absolute top-6 left-8 w-6 h-6 bg-pink-400 rounded-lg opacity-60"></div>
-                      <div className="absolute top-16 right-4 w-4 h-4 bg-red-400 rounded-full opacity-70"></div>
+                      <div className="absolute top-6 left-8 w-6 h-6 bg-purple-400 rounded-lg opacity-60"></div>
+                      <div className="absolute top-16 right-4 w-4 h-4 bg-blue-400 rounded-full opacity-70"></div>
                     </div>
                   </div>
                   {/* Decorative elements */}
-                  <div className="absolute top-4 left-4 w-6 h-6 bg-pink-400 rounded-full opacity-30"></div>
-                  <div className="absolute bottom-4 right-4 w-8 h-8 bg-red-400 rounded-full opacity-40"></div>
-                  <div className="absolute top-16 left-12 w-4 h-4 bg-pink-300 rounded-full opacity-50"></div>
+                  <div className="absolute top-4 left-4 w-6 h-6 bg-purple-400 rounded-full opacity-30"></div>
+                  <div className="absolute bottom-4 right-4 w-8 h-8 bg-blue-400 rounded-full opacity-40"></div>
+                  <div className="absolute top-16 left-12 w-4 h-4 bg-purple-300 rounded-full opacity-50"></div>
                 </div>
               </div>
               
@@ -279,18 +279,18 @@ export default function Home() {
                       {/* Growth Chart */}
                       <div className="relative w-48 h-32">
                         {/* Chart bars */}
-                        <div className="absolute bottom-0 left-4 w-6 h-12 bg-red-400 rounded-t"></div>
-                        <div className="absolute bottom-0 left-12 w-6 h-16 bg-red-500 rounded-t"></div>
-                        <div className="absolute bottom-0 left-20 w-6 h-20 bg-red-600 rounded-t"></div>
-                        <div className="absolute bottom-0 left-28 w-6 h-24 bg-red-700 rounded-t"></div>
+                        <div className="absolute bottom-0 left-4 w-6 h-12 bg-blue-400 rounded-t"></div>
+                        <div className="absolute bottom-0 left-12 w-6 h-16 bg-blue-500 rounded-t"></div>
+                        <div className="absolute bottom-0 left-20 w-6 h-20 bg-blue-600 rounded-t"></div>
+                        <div className="absolute bottom-0 left-28 w-6 h-24 bg-purple-600 rounded-t"></div>
                         
                         {/* Arrow */}
-                        <div className="absolute top-4 right-8 w-12 h-1 bg-red-500 transform rotate-12">
-                          <div className="absolute -right-1 -top-1 w-0 h-0 border-l-4 border-b-2 border-t-2 border-l-red-500 border-b-transparent border-t-transparent"></div>
+                        <div className="absolute top-4 right-8 w-12 h-1 bg-purple-600 transform rotate-12">
+                          <div className="absolute -right-1 -top-1 w-0 h-0 border-l-4 border-b-2 border-t-2 border-l-purple-600 border-b-transparent border-t-transparent"></div>
                         </div>
                         
                         {/* Dollar sign */}
-                        <div className="absolute top-2 left-2 w-8 h-8 bg-green-400 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        <div className="absolute top-2 left-2 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
                           $
                         </div>
                       </div>
