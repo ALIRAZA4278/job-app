@@ -8,13 +8,7 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware((auth, req) => {
-  if (isProtectedRoute(req)) {
-    const { userId } = auth();
-    if (!userId) {
-      // Not authenticated, redirect to sign-in
-      return Response.redirect('https://accounts.dev/sign-in');
-    }
-  }
+  if (isProtectedRoute(req)) auth().protect();
 });
 
 export const config = {
