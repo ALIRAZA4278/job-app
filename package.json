@@ -26,6 +26,7 @@
     "react-dom": "19.1.0",
     "react-hook-form": "^7.60.0",
     "react-hot-toast": "^2.5.2",
+    "resend": "^4.7.0",
     "svix": "^1.69.0",
     "zod": "^4.0.5"
   },

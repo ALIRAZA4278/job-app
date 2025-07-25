@@ -13,34 +13,104 @@ export default function CompaniesPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredCompanies, setFilteredCompanies] = useState([]);
+  const [jobsCompanies, setJobsCompanies] = useState([]);
 
   useEffect(() => {
-    fetchCompanies();
+    fetchAllCompanies();
   }, []);
 
   useEffect(() => {
-    const filtered = companies.filter(company =>
-      company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      company.industry.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      company.location.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const allCompanies = mergeCompanies(companies, jobsCompanies);
+    const filtered = allCompanies.filter(company => {
+      const search = searchTerm;
+      return (
+        (typeof company.name === 'string' && company.name.includes(search)) ||
+        (typeof company.industry === 'string' && company.industry.includes(search)) ||
+        (typeof company.location === 'string' && company.location.includes(search))
+      );
+    });
     setFilteredCompanies(filtered);
-  }, [searchTerm, companies]);
+  }, [searchTerm, companies, jobsCompanies]);
 
-  const fetchCompanies = async () => {
+  // Fetch companies from /api/companies and jobs from /api/jobs, then merge
+  const fetchAllCompanies = async () => {
+    setLoading(true);
     try {
-      const response = await fetch('/api/companies');
-      if (response.ok) {
-        const data = await response.json();
-        setCompanies(data);
-        setFilteredCompanies(data);
+      const [companiesRes, jobsRes] = await Promise.all([
+        fetch('/api/companies'),
+        fetch('/api/jobs')
+      ]);
+      let companiesData = [];
+      let jobsData = [];
+      if (companiesRes.ok) {
+        companiesData = await companiesRes.json();
       }
+      if (jobsRes.ok) {
+        jobsData = await jobsRes.json();
+      }
+      setCompanies(companiesData);
+      setJobsCompanies(companiesFromJobs(jobsData));
     } catch (error) {
-      console.error('Error fetching companies:', error);
+      console.error('Error fetching companies or jobs:', error);
     } finally {
       setLoading(false);
     }
   };
+
+  // Helper: extract companies from jobs array
+  function companiesFromJobs(jobs) {
+    if (!Array.isArray(jobs)) return [];
+    const companyMap = {};
+    jobs.forEach(job => {
+      if (!job || !job.company) return;
+      const name = job.company;
+      if (!name) return;
+      if (!companyMap[name]) {
+        companyMap[name] = {
+          _id: `job-company-${name}`,
+          name,
+          industry: job.industry || '',
+          location: job.location || '',
+          logo: job.companyLogo || '',
+          size: job.companySize || '',
+          openPositions: 0,
+          description: job.companyDescription || '',
+          website: job.companyWebsite || '',
+          jobs: []
+        };
+      }
+      companyMap[name].jobs.push(job);
+      companyMap[name].openPositions += 1;
+    });
+    return Object.values(companyMap);
+  }
+
+  // Helper: merge companies from /api/companies and jobs
+  function mergeCompanies(apiCompanies, jobsCompanies) {
+    const map = {};
+    apiCompanies.forEach(c => {
+      if (!c || !c.name) return;
+      map[c.name] = { ...c };
+    });
+    jobsCompanies.forEach(jc => {
+      if (!jc || !jc.name) return;
+      if (map[jc.name]) {
+        // Merge jobs and openPositions
+        map[jc.name].jobs = Array.isArray(map[jc.name].jobs)
+          ? [...map[jc.name].jobs, ...(jc.jobs || [])]
+          : (jc.jobs || []);
+        map[jc.name].openPositions =
+          (map[jc.name].openPositions || 0) + (jc.openPositions || 0);
+        // Prefer logo/website/industry/location/description if missing
+        ['logo','website','industry','location','description','size'].forEach(field => {
+          if (!map[jc.name][field] && jc[field]) map[jc.name][field] = jc[field];
+        });
+      } else {
+        map[jc.name] = { ...jc };
+      }
+    });
+    return Object.values(map);
+  }
 
   if (loading) {
     return (
@@ -160,13 +230,35 @@ export default function CompaniesPage() {
                 {company.description}
               </p>
 
+              {/* Jobs List for this Company */}
+              {Array.isArray(company.jobs) && company.jobs.length > 0 && (
+                <div className="mt-4">
+                  <h4 className="text-md font-semibold mb-2 text-black">Open Jobs</h4>
+                  <ul className="space-y-2">
+                    {company.jobs.map((job) => (
+                      <li key={job._id} className="flex items-center justify-between bg-gray-50 rounded px-2 py-1">
+                        <div>
+                          <span className="font-medium text-black">{job.jobTitle}</span>
+                          <span className="ml-2 text-gray-500 text-xs">{job.location}</span>
+                        </div>
+                        <Link
+                          href={`/jobs/${job._id}`}
+                          className="text-blue-600 hover:underline text-xs"
+                        >
+                          View
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               {/* Action Buttons */}
-              <div className="flex space-x-3">
+              <div className="flex space-x-3 mt-4">
                 <Link
                   href={`/jobs?company=${encodeURIComponent(company.name)}`}
                   className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-center text-sm font-medium"
                 >
-                  View Jobs ({company.openPositions})
+                  View All Jobs
                 </Link>
                 {company.website && (
                   <a

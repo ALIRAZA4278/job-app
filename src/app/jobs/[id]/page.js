@@ -3,21 +3,22 @@
 import { useState, useEffect, useCallback } from "react";
 import { Modal, Input, Button, Form } from "antd";
 import { useParams, useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import { 
-  MapPin, 
-  Clock, 
-  Building, 
-  DollarSign, 
-  Calendar, 
-  Eye, 
-  Share2, 
-  Bookmark, 
+import "dotenv/config";
+import {
+  MapPin,
+  Clock,
+  Building,
+  DollarSign,
+  Calendar,
+  Eye,
+  Share2,
+  Bookmark,
   ExternalLink,
-  ArrowLeft
+  ArrowLeft,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -32,7 +33,16 @@ export default function JobDetailPage() {
   const [form] = Form.useForm();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [submittedData, setSubmittedData] = useState(null);
+  const { isSignedIn } = useAuth();
+  const [showLoginError, setShowLoginError] = useState(false);
 
+  const handleApplyJob = (e) => {
+    e.preventDefault();
+    if (!isSignedIn) {
+      setShowLoginError(true);
+      setTimeout(() => setShowLoginError(false), 3000);
+    } 
+  };
   const fetchJob = useCallback(async () => {
     try {
       setLoading(true);
@@ -63,6 +73,32 @@ export default function JobDetailPage() {
   const handleApplyForm = async (values) => {
     setApplying(true);
     try {
+      // Find the best company email to send to
+      const companyEmail =
+        job?.contactEmail ||
+        job?.companyEmail ||
+        job?.company?.email ||
+        job?.recruiterEmail ||
+        "";
+      if (!companyEmail) {
+        toast.error("No company email found for this job.");
+        setApplying(false);
+        return;
+      }
+      // Build the message HTML
+      const messageHtml = `
+        <h2>New Job Application</h2>
+        <p><strong>Job Title:</strong> ${job?.jobTitle}</p>
+        <p><strong>Job ID:</strong> ${job?._id}</p>
+        <p><strong>Applicant Name:</strong> ${values.name}</p>
+        <p><strong>Applicant Email:</strong> ${values.email}</p>
+        <p><strong>Clerk User ID:</strong> ${values.clerkId || ""}</p>
+        <p><strong>Phone:</strong> ${values.phone || ""}</p>
+        <p><strong>Skills:</strong> ${values.skills || ""}</p>
+        <p><strong>Bio:</strong> ${values.bio || ""}</p>
+        <p><strong>Education:</strong> ${values.education || ""}</p>
+        <p><strong>Cover Letter:</strong><br/>${values.coverLetter || ""}</p>
+      `;
       const res = await fetch("/api/apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -70,18 +106,8 @@ export default function JobDetailPage() {
           subject: `New Application for ${job?.jobTitle}`,
           from_name: values.name,
           from_email: values.email,
-          to: job?.company?.email || job?.recruiterEmail || "",
-          message:
-            `A new job application has been received.\n\n` +
-            `Job Title: ${job?.jobTitle}\nJob ID: ${job?._id}\n` +
-            `Applicant Name: ${values.name}\n` +
-            `Applicant Email: ${values.email}\n` +
-            `Phone: ${values.phone || ''}\n` +
-            `Skills: ${values.skills || ''}\n` +
-            `Resume: ${values.resume || ''}\n` +
-            `Bio: ${values.bio || ''}\n` +
-            `Education: ${values.education || ''}\n` +
-            `Cover Letter: ${values.coverLetter || ''}`,
+          to: companyEmail,
+          message: messageHtml,
         }),
       });
       const data = await res.json();
@@ -102,17 +128,17 @@ export default function JobDetailPage() {
   };
 
   const formatSalary = (salary, salaryRange) => {
-    if (salary && typeof salary === 'object') {
+    if (salary && typeof salary === "object") {
       if (!salary.min && !salary.max) return "Competitive";
       if (salary.min && salary.max) {
-        return `$${salary.min.toLocaleString()} - $${salary.max.toLocaleString()}/${salary.period || ''}`;
+        return `$${salary.min.toLocaleString()} - $${salary.max.toLocaleString()}/${salary.period || ""}`;
       }
-      return `$${(salary.min || salary.max).toLocaleString()}/${salary.period || ''}`;
+      return `$${(salary.min || salary.max).toLocaleString()}/${salary.period || ""}`;
     }
-    if (typeof salaryRange === 'string' && salaryRange.trim() !== '') {
+    if (typeof salaryRange === "string" && salaryRange.trim() !== "") {
       return salaryRange;
     }
-    if (typeof salary === 'string' && salary.trim() !== '') {
+    if (typeof salary === "string" && salary.trim() !== "") {
       return salary;
     }
     return "Competitive";
@@ -139,7 +165,9 @@ export default function JobDetailPage() {
         <Navbar />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Job Not Found</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">
+              Job Not Found
+            </h1>
             <Link href="/jobs" className="text-blue-600 hover:text-blue-800">
               Back to Jobs
             </Link>
@@ -152,11 +180,11 @@ export default function JobDetailPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
-          <Link 
-            href="/jobs" 
+          <Link
+            href="/jobs"
             className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -170,15 +198,32 @@ export default function JobDetailPage() {
             <div className="bg-white rounded-lg shadow-md p-6 mb-6">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-start space-x-4">
-                  {job.companyLogo && (
-                    <Image
-                      src={job.companyLogo}
-                      alt={job.companyName}
-                      width={64}
-                      height={64}
-                      className="rounded-lg"
-                    />
-                  )}
+                  {job.companyLogo &&
+                    (() => {
+                      try {
+                        // Only render if src is a valid absolute URL or starts with /
+                        const src = job.companyLogo;
+                        if (
+                          typeof src === "string" &&
+                          (src.startsWith("http://") ||
+                            src.startsWith("https://") ||
+                            src.startsWith("/"))
+                        ) {
+                          return (
+                            <Image
+                              src={src}
+                              alt={job.companyName}
+                              width={64}
+                              height={64}
+                              className="rounded-lg"
+                            />
+                          );
+                        }
+                      } catch (e) {
+                        // skip image if error
+                      }
+                      return null;
+                    })()}
                   <div>
                     <h1 className="text-2xl font-bold text-gray-900 mb-2">
                       {job.jobTitle}
@@ -193,11 +238,12 @@ export default function JobDetailPage() {
                       </span>
                       <span className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
-                        {job.jobType ? job.jobType.replace('-', ' ') : 'N/A'}
+                        {job.jobType ? job.jobType.replace("-", " ") : "N/A"}
                       </span>
                       <span className="flex items-center">
                         <DollarSign className="h-4 w-4 mr-1" />
-                         {job.salaryMin?.toLocaleString()} - {job.salaryMax?.toLocaleString()}
+                        {job.salaryMin?.toLocaleString()} -{" "}
+                        {job.salaryMax?.toLocaleString()}
                       </span>
                       <span className="flex items-center">
                         <Eye className="h-4 w-4 mr-1" />
@@ -216,14 +262,15 @@ export default function JobDetailPage() {
                 </div>
               </div>
               <div className="flex flex-wrap gap-2 mb-6">
-                {Array.isArray(job.requiredSkills) && job.requiredSkills.map((skill, index) => (
-                  <span 
-                    key={index}
-                    className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full"
-                  >
-                    {skill}
-                  </span>
-                ))}
+                {Array.isArray(job.requiredSkills) &&
+                  job.requiredSkills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full"
+                    >
+                      {skill}
+                    </span>
+                  ))}
               </div>
               <div className="prose max-w-none">
                 <h2 className="text-xl font-semibold mb-4">Job Description</h2>
@@ -234,13 +281,20 @@ export default function JobDetailPage() {
               </div>
               {/* Apply Now Button */}
               <div className="mt-8 flex justify-end">
-                <Button
-                  type="primary"
-                  style={{ background: '#2563eb', color: '#fff' }}
-                  onClick={handleApply}
-                >
-                  Apply Now
-                </Button>
+                <span onClick={handleApplyJob}>
+                  {showLoginError && (
+                    <div className="mb-4 text-red-200 font-semibold">
+                      Please log in or sign up before posting a job.
+                    </div>
+                  )}
+                  <Button
+                    type="primary"
+                    style={{ background: "#2563eb", color: "#fff" }}
+                    onClick={handleApply}
+                  >
+                    Apply Now
+                  </Button>
+                </span>
               </div>
               {/* Application Modal */}
               <Modal
@@ -258,14 +312,16 @@ export default function JobDetailPage() {
                   <Form.Item
                     name="clerkId"
                     label="Clerk User ID"
-                    initialValue={user?.id || ''}
+                    initialValue={user?.id || ""}
                   >
                     <Input disabled />
                   </Form.Item>
                   <Form.Item
                     name="name"
                     label="Your Name"
-                    rules={[{ required: true, message: "Please enter your name" }]}
+                    rules={[
+                      { required: true, message: "Please enter your name" },
+                    ]}
                     initialValue={user?.fullName || ""}
                   >
                     <Input placeholder="Enter your name" />
@@ -273,7 +329,13 @@ export default function JobDetailPage() {
                   <Form.Item
                     name="email"
                     label="Your Email"
-                    rules={[{ required: true, type: "email", message: "Please enter a valid email" }]}
+                    rules={[
+                      {
+                        required: true,
+                        type: "email",
+                        message: "Please enter a valid email",
+                      },
+                    ]}
                     initialValue={user?.primaryEmailAddress?.emailAddress || ""}
                   >
                     <Input placeholder="Enter your email" />
@@ -281,64 +343,91 @@ export default function JobDetailPage() {
                   <Form.Item
                     name="phone"
                     label="Phone Number"
-                    rules={[{ required: true, message: "Please enter your phone number" }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter your phone number",
+                      },
+                    ]}
                   >
                     <Input placeholder="Enter your phone number" />
                   </Form.Item>
                   <Form.Item
                     name="skills"
                     label="Skills (comma separated)"
-                    rules={[{ required: true, message: "Please enter your skills" }]}
+                    rules={[
+                      { required: true, message: "Please enter your skills" },
+                    ]}
                   >
                     <Input placeholder="e.g. React, Node.js, MongoDB" />
                   </Form.Item>
                   <Form.Item
                     name="resume"
                     label="Resume (PDF, DOC, DOCX)"
-                    rules={[{ required: true, message: "Please upload your resume" }]}
+                    rules={[
+                      { required: true, message: "Please upload your resume" },
+                    ]}
                     valuePropName="fileList"
                   >
                     <Input type="file" accept=".pdf,.doc,.docx" />
                   </Form.Item>
-                  <Form.Item
-                    name="bio"
-                    label="Bio"
-                  >
-                    <Input.TextArea rows={3} placeholder="Short bio about yourself" />
+                  <Form.Item name="bio" label="Bio">
+                    <Input.TextArea
+                      rows={3}
+                      placeholder="Short bio about yourself"
+                    />
                   </Form.Item>
-                  <Form.Item
-                    name="education"
-                    label="Education"
-                  >
+                  <Form.Item name="education" label="Education">
                     <Input placeholder="Your education" />
                   </Form.Item>
                   <Form.Item
                     name="coverLetter"
                     label="Cover Letter"
-                    rules={[{ required: true, message: "Please enter a cover letter" }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter a cover letter",
+                      },
+                    ]}
                   >
-                    <Input.TextArea rows={5} placeholder="Write your cover letter here..." />
+                    <Input.TextArea
+                      rows={5}
+                      placeholder="Write your cover letter here..."
+                    />
                   </Form.Item>
                   <Form.Item>
-                    <Button type="primary" htmlType="submit" loading={applying} style={{ width: "100%", background: "#2563eb", color: "#fff" }}>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      loading={applying}
+                      style={{
+                        width: "100%",
+                        background: "#2563eb",
+                        color: "#fff",
+                      }}
+                    >
                       Submit Application
                     </Button>
                   </Form.Item>
                 </Form>
+                <h1>Contact Email: {job?.contactEmail}</h1>
               </Modal>
             </div>
-                     
-            
+
             <div className="bg-white rounded-lg shadow-md p-6">
               <h3 className="text-lg font-semibold mb-4">Job Details</h3>
               <div className="space-y-3">
                 <div>
                   <span className="text-sm text-gray-500">Job Type</span>
-                  <p className="font-medium">{job.jobType ? job.jobType.replace('-', ' ') : 'N/A'}</p>
+                  <p className="font-medium">
+                    {job.jobType ? job.jobType.replace("-", " ") : "N/A"}
+                  </p>
                 </div>
                 <div>
-                  <span className="text-sm text-gray-500">Experience Level</span>
-                  <p className="font-medium">{job.experienceLevel || 'N/A'}</p>
+                  <span className="text-sm text-gray-500">
+                    Experience Level
+                  </span>
+                  <p className="font-medium">{job.experienceLevel || "N/A"}</p>
                 </div>
                 <div>
                   <span className="text-sm text-gray-500">Category</span>
@@ -350,19 +439,19 @@ export default function JobDetailPage() {
                 </div>
                 {job.applicationDeadline && (
                   <div>
-                    <span className="text-sm text-gray-500">Application Deadline</span>
-                    <p className="font-medium">{formatDate(job.applicationDeadline)}</p>
+                    <span className="text-sm text-gray-500">
+                      Application Deadline
+                    </span>
+                    <p className="font-medium">
+                      {formatDate(job.applicationDeadline)}
+                    </p>
                   </div>
                 )}
               </div>
             </div>
           </div>
-      
-
-
         </div>
       </div>
     </div>
-     
   );
 }

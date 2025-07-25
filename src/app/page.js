@@ -1,12 +1,30 @@
+"use client";
+
 import Link from "next/link";
 import { Search, Briefcase, Users, TrendingUp } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useAuth } from "@clerk/nextjs";
 
 export default function Home() {
+  const router = useRouter();
+  const { isSignedIn } = useAuth();
+  const [showLoginError, setShowLoginError] = useState(false);
+
+  const handlePostJob = (e) => {
+    e.preventDefault();
+    if (!isSignedIn) {
+      setShowLoginError(true);
+      setTimeout(() => setShowLoginError(false), 3000);
+    } else {
+      router.push("/dashboard");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -17,6 +35,9 @@ export default function Home() {
             <p className="text-xl md:text-2xl mb-8 text-blue-100">
               Connect with top companies and discover opportunities that match your skills
             </p>
+            {showLoginError && (
+              <div className="mb-4 text-red-200 font-semibold">Please log in or sign up before posting a job.</div>
+            )}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/jobs"
@@ -24,12 +45,12 @@ export default function Home() {
               >
                 Browse Jobs
               </Link>
-              <Link
-                href="/dashboard"
+              <button
+                onClick={handlePostJob}
                 className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
               >
                 Post a Job
-              </Link>
+              </button>
             </div>
           </div>
         </div>

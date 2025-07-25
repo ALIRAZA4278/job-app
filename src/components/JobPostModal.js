@@ -104,56 +104,56 @@ export default function JobPostModal({ open, onClose, onSubmit, recruiterId, use
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-auto bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl shadow-2xl border border-slate-700/50 w-full max-w-6xl max-h-[95vh] overflow-hidden">
+    <div className="text-white fixed inset-0 z-50 overflow-auto bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="text-white relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl shadow-2xl border border-slate-700/50 w-full max-w-6xl max-h-[95vh] overflow-hidden">
         {/* Decorative background elements */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-blue-500 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-24 h-24 bg-purple-500 rounded-full blur-3xl"></div>
+        <div className="text-white absolute top-0 left-0 w-full h-full opacity-10">
+          <div className="text-white absolute top-20 left-20 w-32 h-32 bg-blue-500 rounded-full blur-3xl"></div>
+          <div className="text-white absolute bottom-20 right-20 w-24 h-24 bg-purple-500 rounded-full blur-3xl"></div>
         </div>
         
         {/* Header */}
-        <div className="relative flex items-center justify-between p-8 border-b border-slate-700/50 bg-gradient-to-r from-slate-800/50 to-slate-700/30">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-white relative flex items-center justify-between p-8 border-b border-slate-700/50 bg-gradient-to-r from-slate-800/50 to-slate-700/30">
+          <div className="text-white flex items-center gap-4">
+            <div className="text-white w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <svg className=" w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6" />
               </svg>
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-white">
+              <h2 className=" text-3xl font-bold text-white">
                 {editJob ? "Edit Job Posting" : "Create New Job"}
               </h2>
-              <p className="text-slate-400 text-sm">
+              <p className="text-white  text-sm">
                 {editJob ? "Update your job posting details" : "Fill in the details to post a new job"}
               </p>
             </div>
           </div>
           <button 
             onClick={onClose} 
-            className="w-10 h-10 rounded-full bg-slate-700 hover:bg-slate-600 text-white flex items-center justify-center transition-all duration-200 hover:scale-110"
+            className="text-white w-10 h-10 rounded-full bg-slate-700 hover:bg-slate-600  flex items-center justify-center transition-all duration-200 hover:scale-110"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="text-white w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* Form Content */}
-        <form onSubmit={handleSubmit} className="relative overflow-y-auto max-h-[calc(95vh-140px)]">
-          <div className="p-8 space-y-8">
+        <form onSubmit={handleSubmit} className="text-white relative overflow-y-auto max-h-[calc(95vh-140px)]">
+          <div className="text-white p-8 space-y-8">
             {/* Basic Information Section */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">1</span>
+            <div className="text-white space-y-6">
+              <div className="text-white flex items-center gap-3 mb-6">
+                <div className="text-white w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white  font-bold text-sm">1</span>
                 </div>
                 <h3 className="text-xl font-semibold text-white">Basic Information</h3>
               </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Job Title *</label>
+              <div className="text-white grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="text-white space-y-2">
+                  <label className="text-white text-sm font-medium ">Job Title *</label>
                   <input 
                     name="jobTitle" 
                     placeholder="e.g. Senior Frontend Developer" 
@@ -164,43 +164,43 @@ export default function JobPostModal({ open, onClose, onSubmit, recruiterId, use
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Company Name *</label>
+                <div className="text-white space-y-2">
+                  <label className="e text-sm font-medium text-slate-300">Company Name *</label>
                   <input 
                     name="companyName" 
                     placeholder="e.g. TechCorp Inc." 
                     required 
                     value={companyName} 
                     onChange={e => setCompanyName(e.target.value)} 
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className=" w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Clerk User ID</label>
+                <div className="text-white space-y-2">
+                  <label className="text-white text-sm font-medium ">Clerk User ID</label>
                   <input 
                     name="userId" 
                     placeholder="Clerk User ID" 
                     value={userId || ''} 
                     disabled 
-                    className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl text-slate-400 cursor-not-allowed"
+                    className="text-white w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl  cursor-not-allowed"
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Company Logo URL</label>
+                <div className="text-white space-y-2">
+                  <label className="text-white text-sm font-medium ">Company Logo URL</label>
                   <input 
                     name="companyLogo" 
                     placeholder="https://example.com/logo.png" 
                     value={companyLogo} 
                     onChange={e => setCompanyLogo(e.target.value)} 
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className="text-white w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl  placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                   />
                 </div>
               </div>
               
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Job Description *</label>
+              <div className="text-white space-y-2">
+                <label className="text-white text-sm font-medium ">Job Description *</label>
                 <textarea 
                   name="jobDescription" 
                   placeholder="Describe the role, responsibilities, and what makes this position exciting..." 
@@ -208,29 +208,29 @@ export default function JobPostModal({ open, onClose, onSubmit, recruiterId, use
                   rows={5} 
                   value={jobDescription} 
                   onChange={e => setJobDescription(e.target.value)} 
-                  className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 resize-none"
+                  className="text-white w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl  placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 resize-none"
                 />
               </div>
             </div>
 
             {/* Job Details Section */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">2</span>
+            <div className="text-white space-y-6">
+              <div className="text-white flex items-center gap-3 mb-6">
+                <div className="text-white w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white  font-bold text-sm">2</span>
                 </div>
-                <h3 className="text-xl font-semibold text-white">Job Details</h3>
+                <h3 className="text-white text-xl font-semibold ">Job Details</h3>
               </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Job Type *</label>
+              <div className="text-white grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="text-white space-y-2">
+                  <label className="text-white text-sm font-mediu">Job Type *</label>
                   <select 
                     name="jobType" 
                     required 
                     value={jobType} 
                     onChange={e => setJobType(e.target.value)} 
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className=" w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                   >
                     <option value="">Select Job Type</option>
                     <option value="Full-time">Full-time</option>
@@ -243,14 +243,14 @@ export default function JobPostModal({ open, onClose, onSubmit, recruiterId, use
                   </select>
                 </div>
                 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Experience Level *</label>
+                <div className="text-white space-y-2">
+                  <label className="text-white text-sm font-medium ">Experience Level *</label>
                   <select 
                     name="experienceLevel" 
                     required 
                     value={experienceLevel} 
                     onChange={e => setExperienceLevel(e.target.value)} 
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className="text-white w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl  focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                   >
                     <option value="">Select Experience Level</option>
                     <option value="Junior">Junior</option>
@@ -261,60 +261,60 @@ export default function JobPostModal({ open, onClose, onSubmit, recruiterId, use
                   </select>
                 </div>
                 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Category *</label>
+                <div className="text-white space-y-2">
+                  <label className="text-white text-sm font-medium ">Category *</label>
                   <input 
                     name="category" 
                     placeholder="e.g. Software Development" 
                     required 
                     value={category} 
                     onChange={e => setCategory(e.target.value)} 
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className="text-white w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl  placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                   />
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Required Skills</label>
+              <div className="text-white grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="text-white space-y-2">
+                  <label className="text-white text-sm font-medium ">Required Skills</label>
                   <input 
                     name="requiredSkills" 
                     placeholder="React, JavaScript, Node.js, etc." 
                     value={requiredSkills} 
                     onChange={e => setRequiredSkills(e.target.value)} 
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className="text-white w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl  placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Location *</label>
+                <div className="text-white space-y-2">
+                  <label className="text-white text-sm font-medium ">Location *</label>
                   <input 
                     name="location" 
                     placeholder="e.g. San Francisco, CA or Remote" 
                     required 
                     value={location} 
                     onChange={e => setLocation(e.target.value)} 
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className="text-white w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl  placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                   />
                 </div>
               </div>
             </div>
 
             {/* Compensation & Requirements Section */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">3</span>
+            <div className="text-white space-y-6">
+              <div className="text-white flex items-center gap-3 mb-6">
+                <div className="text-white w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white  font-bold text-sm">3</span>
                 </div>
-                <h3 className="text-xl font-semibold text-white">Compensation & Requirements</h3>
+                <h3 className="text-white text-xl font-semibold ">Compensation & Requirements</h3>
               </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Min Salary *</label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400">$</span>
+              <div className="text-white grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="text-white grid grid-cols-2 gap-4">
+                  <div className="text-white space-y-2">
+                    <label className="text-white text-sm font-medium">Min Salary *</label>
+                    <div className="text-white relative">
+                      <span className="text-white absolute left-3 top-1/2 transform -translate-y-1/2 ">$</span>
                       <input 
                         name="salaryMin" 
                         type="number" 
@@ -323,15 +323,15 @@ export default function JobPostModal({ open, onClose, onSubmit, recruiterId, use
                         required 
                         value={salaryMin} 
                         onChange={e => setSalaryMin(e.target.value)} 
-                        className="w-full pl-8 pr-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                        className="text-white w-full pl-8 pr-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl  placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                       />
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Max Salary *</label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400">$</span>
+                  <div className="text-white space-y-2">
+                    <label className="text-white text-sm font-medium ">Max Salary *</label>
+                    <div className="text-white relative">
+                      <span className="text-white absolute left-3 top-1/2 transform -translate-y-1/2 ">$</span>
                       <input 
                         name="salaryMax" 
                         type="number" 
@@ -340,27 +340,27 @@ export default function JobPostModal({ open, onClose, onSubmit, recruiterId, use
                         required 
                         value={salaryMax} 
                         onChange={e => setSalaryMax(e.target.value)} 
-                        className="w-full pl-8 pr-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                        className="text-white w-full pl-8 pr-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl  placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                       />
                     </div>
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Application Deadline</label>
+                <div className="text-white space-y-2">
+                  <label className="text-white text-sm font-medium 00">Application Deadline</label>
                   <input 
                     name="deadline" 
                     type="date" 
                     value={deadline} 
                     onChange={e => setDeadline(e.target.value)} 
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className="text-white w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl  focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                   />
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Number of Openings</label>
+              <div className="text-white grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="text-white space-y-2">
+                  <label className="text-white text-sm font-medium ">Number of Openings</label>
                   <input 
                     name="openings" 
                     type="number" 
@@ -368,20 +368,20 @@ export default function JobPostModal({ open, onClose, onSubmit, recruiterId, use
                     placeholder="1" 
                     value={openings} 
                     onChange={e => setOpenings(e.target.value)} 
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className="text-white w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl  placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                   />
                 </div>
                 
-                <div className="flex items-center space-x-4 pt-8">
+                <div className="text-white flex items-center space-x-4 pt-8">
                   <input 
                     name="isTestRequired" 
                     type="checkbox" 
                     id="testRequired"
                     checked={isTestRequired} 
                     onChange={e => setIsTestRequired(e.target.checked)} 
-                    className="w-5 h-5 rounded bg-slate-800 border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-2"
+                    className="text-white w-5 h-5 rounded bg-slate-800 border-slate-600  focus:ring-blue-500 focus:ring-2"
                   />
-                  <label htmlFor="testRequired" className="text-sm font-medium text-slate-300">
+                  <label htmlFor="testRequired" className="text-white text-sm font-medium ">
                     Technical assessment required
                   </label>
                 </div>
@@ -389,17 +389,17 @@ export default function JobPostModal({ open, onClose, onSubmit, recruiterId, use
             </div>
 
             {/* Contact Information Section */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">4</span>
+            <div className="text-white space-y-6">
+              <div className="text-white flex items-center gap-3 mb-6">
+                <div className="text-white w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white  font-bold text-sm">4</span>
                 </div>
-                <h3 className="text-xl font-semibold text-white">Contact Information</h3>
+                <h3 className="text-white text-xl font-semibold ">Contact Information</h3>
               </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Contact Email *</label>
+              <div className="text-white grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="text-white space-y-2">
+                  <label className="text-white text-sm font-medium ">Contact Email *</label>
                   <input 
                     name="contactEmail" 
                     placeholder="hiring@company.com" 
@@ -407,19 +407,19 @@ export default function JobPostModal({ open, onClose, onSubmit, recruiterId, use
                     required 
                     value={contactEmail} 
                     onChange={e => setContactEmail(e.target.value)} 
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className="text-white w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl  placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">External Apply Link</label>
+                <div className="text-white space-y-2">
+                  <label className="text-white text-sm font-medium ">External Apply Link</label>
                   <input 
                     name="applyLink" 
                     placeholder="https://company.com/apply" 
                     type="url" 
                     value={applyLink} 
                     onChange={e => setApplyLink(e.target.value)} 
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className="text-white w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl  placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                   />
                 </div>
               </div>
@@ -427,18 +427,18 @@ export default function JobPostModal({ open, onClose, onSubmit, recruiterId, use
           </div>
 
           {/* Action Buttons */}
-          <div className="border-t border-slate-700/50 bg-slate-800/30 p-6">
-            <div className="flex flex-col sm:flex-row gap-4 justify-end">
+          <div className="text-white border-t border-slate-700/50 bg-slate-800/30 p-6">
+            <div className="text-white flex flex-col sm:flex-row gap-4 justify-end">
               <button 
                 type="button" 
                 onClick={onClose} 
-                className="px-8 py-3 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-xl transition-all duration-200 hover:scale-105"
+                className="text-white px-8 py-3 bg-slate-700 hover:bg-slate-600  font-semibold rounded-xl transition-all duration-200 hover:scale-105"
               >
                 Cancel
               </button>
               <button 
                 type="submit" 
-                className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-xl transition-all duration-200 hover:scale-105 shadow-lg"
+                className="text-white px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 font-semibold rounded-xl transition-all duration-200 hover:scale-105 shadow-lg"
               >
                 {editJob ? "Update Job" : "Post Job"}
               </button>

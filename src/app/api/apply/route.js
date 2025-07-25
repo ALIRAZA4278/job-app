@@ -1,36 +1,44 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req) {
   try {
     const body = await req.json();
+    console.log('Email request body:', body);
+    
     const {
       to,
       subject,
       from_name,
       from_email,
-      message,
+      message
     } = body;
+    if (!to || !subject || !from_name || !from_email || !message) {
+      return new Response(JSON.stringify({ error: "Missing required fields" }), { status: 400 });
+    }
+    
 
-    // Gmail users: You must use an App Password, not your regular password.
-    // For port 587, use secure: false (TLS will be upgraded automatically)
-    // For port 465, use secure: true
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      secure: false, // Gmail: use false for port 587
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
-
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
+    await resend.emails.send({
+      from: 'onboarding@resend.dev',
       to,
       subject,
-      text: message,
-      replyTo: from_email,
+      html: `
+        <h2>New Job Application</h2>
+        <p><strong>Job:</strong> ${subject}</p>
+        <p><strong>Applicant Name:</strong> ${from_name}</p>
+        <p><strong>Applicant Email:</strong> ${from_email}</p>
+        <pre style="font-family:inherit">${message}</pre>
+      `
     });
+    console.log('Email sent successfully: byresend', {
+      to,
+      subject,
+      from_name,
+      from_email,
+      message
+    });
+    
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (error) {
