@@ -27,6 +27,7 @@ import {
   Star
 } from "lucide-react";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 function JobsPageContent() {
   const [jobs, setJobs] = useState([]);
@@ -224,7 +225,12 @@ function JobsPageContent() {
               className="flex justify-center mb-6"
             >
               <div className="bg-blue-100 rounded-full p-4">
-                <Briefcase className="w-12 h-12 text-blue-600" />
+                <Image
+                  src="/Workoura Icon.png"
+                  alt="Workoura"
+                  width={65}
+                  height={65}
+                />
               </div>
             </motion.div>
             

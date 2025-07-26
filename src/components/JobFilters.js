@@ -84,11 +84,11 @@ export default function JobFilters({ onFilterChange }) {
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+        <h2 className="text-xl font-bold text-black flex items-center gap-2">
           <Search className="w-6 h-6 text-blue-600" />
           Find Your Dream Job
         </h2>
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-black">
           {activeFiltersCount > 0 && `${activeFiltersCount} filters active`}
         </div>
       </div>
@@ -96,20 +96,20 @@ export default function JobFilters({ onFilterChange }) {
       {/* Main Search Bar */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-6">
         {/* Search Input */}
-        <div className="lg:col-span-6 relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+        <div className="lg:col-span-6 relative text-black">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-black" />
           <input
             type="text"
             placeholder="Search jobs, companies, or keywords..."
-            className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white/70 backdrop-blur-sm transition-all duration-200 shadow-sm hover:shadow-md"
+            className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black bg-white/70 backdrop-blur-sm transition-all duration-200 shadow-sm hover:shadow-md"
             value={filters.search}
             onChange={(e) => handleFilterChange("search", e.target.value)}
           />
         </div>
 
         {/* Location Input */}
-        <div className="lg:col-span-4 relative">
-          <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+        <div className="lg:col-span-4 relative text-black">
+          <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 " />
           <input
             type="text"
             placeholder="City, state, or remote"
@@ -189,11 +189,11 @@ export default function JobFilters({ onFilterChange }) {
                   onChange={(e) => handleFilterChange("type", e.target.value)}
                 >
                   <option value="">All Types</option>
-                  <option value="full-time">Full Time</option>
-                  <option value="part-time">Part Time</option>
-                  <option value="contract">Contract</option>
-                  <option value="freelance">Freelance</option>
-                  <option value="internship">Internship</option>
+                  <option value="Full-time">Full-time</option>
+                  <option value="Part-time">Part-time</option>
+                  <option value="Contract">Contract</option>
+                  <option value="Freelance">Freelance</option>
+                  <option value="Internship">Internship</option>
                 </select>
               </div>
 
@@ -209,13 +209,11 @@ export default function JobFilters({ onFilterChange }) {
                   onChange={(e) => handleFilterChange("level", e.target.value)}
                 >
                   <option value="">All Levels</option>
-                  <option value="entry">Entry Level</option>
-                  <option value="junior">Junior</option>
-                  <option value="mid">Mid Level</option>
-                  <option value="senior">Senior Level</option>
-                  <option value="lead">Lead</option>
-                  <option value="principal">Principal</option>
-                  <option value="executive">Executive</option>
+                  <option value="Junior">Junior</option>
+                  <option value="Mid">Mid</option>
+                  <option value="Senior">Senior</option>
+                  <option value="Lead">Lead</option>
+                  <option value="Executive">Executive</option>
                 </select>
               </div>
 
@@ -231,26 +229,15 @@ export default function JobFilters({ onFilterChange }) {
                   onChange={(e) => handleFilterChange("category", e.target.value)}
                 >
                   <option value="">All Categories</option>
-                  <option value="Frontend Development">Frontend Development</option>
-                  <option value="Backend Development">Backend Development</option>
-                  <option value="Full Stack Development">Full Stack Development</option>
-                  <option value="Mobile App Development">Mobile App Development</option>
-                  <option value="Web Design">Web Design</option>
-                  <option value="UI/UX Design">UI/UX Design</option>
-                  <option value="DevOps">DevOps</option>
-                  <option value="Quality Assurance">Quality Assurance</option>
-                  <option value="WordPress Development">WordPress Development</option>
-                  <option value="E-commerce Development">E-commerce Development</option>
-                  <option value="API Development">API Development</option>
-                  <option value="Database Administration">Database Administration</option>
-                  <option value="Web Security">Web Security</option>
-                  <option value="Cloud Computing">Cloud Computing</option>
-                  <option value="JavaScript Development">JavaScript Development</option>
-                  <option value="React Development">React Development</option>
-                  <option value="Node.js Development">Node.js Development</option>
-                  <option value="Python Development">Python Development</option>
-                  <option value="PHP Development">PHP Development</option>
-                  <option value="SEO Specialist">SEO Specialist</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Design">Design</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Management">Management</option>
+                  <option value="Business">Business</option>
+                  <option value="Human Resources">Human Resources</option>
+                  <option value="Sales">Sales</option>
+                  <option value="Media">Media</option>
+                  <option value="Content">Content</option>
                 </select>
               </div>
 

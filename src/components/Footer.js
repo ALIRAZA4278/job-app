@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { 
-  Briefcase, 
   Mail, 
   Phone, 
   MapPin, 
@@ -93,10 +93,13 @@ export default function Footer() {
             {/* Company Info */}
             <div className="lg:col-span-1">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Briefcase className="w-6 h-6 text-white" />
-                </div>
-                <span className="text-2xl font-bold">JobBoard</span>
+                <Image
+                  src="/Workoura Logo.png"
+                  alt="Workoura"
+                  width={140}
+                  height={40}
+                  className="h-8 w-auto brightness-0 invert"
+                />
               </div>
               <p className="text-gray-400 mb-6 leading-relaxed">
                 Your trusted partner in connecting talent with opportunity. 
@@ -107,15 +110,15 @@ export default function Footer() {
               <div className="space-y-3">
                 <div className="flex items-center space-x-3 text-gray-400">
                   <Mail className="w-4 h-4 text-blue-400" />
-                  <span>support@jobboard.com</span>
+                  <span>support@workoura.com</span>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-400">
                   <Phone className="w-4 h-4 text-blue-400" />
-                  <span>+1 (555) 123-4567</span>
+                  <span>+92 3212865058</span>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-400">
                   <MapPin className="w-4 h-4 text-blue-400" />
-                  <span>San Francisco, CA</span>
+                  <span>Pakistan, karachi</span>
                 </div>
               </div>
             </div>
@@ -127,6 +130,18 @@ export default function Footer() {
                 For Job Seekers
               </h3>
               <ul className="space-y-3">
+                  <li>
+                  <Link href="/dashboard" className="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
+                    <ArrowRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about" className="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
+                    <ArrowRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    About 
+                  </Link>
+                </li>
                 <li>
                   <Link href="/jobs" className="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
                     <ArrowRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -145,18 +160,7 @@ export default function Footer() {
                     My Applications
                   </Link>
                 </li>
-                <li>
-                  <Link href="/profile" className="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
-                    <ArrowRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/career-advice" className="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
-                    <ArrowRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    Career Advice
-                  </Link>
-                </li>
+              
               </ul>
             </div>
 
@@ -254,7 +258,7 @@ export default function Footer() {
             <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
               {/* Copyright */}
               <div className="flex items-center space-x-2 text-gray-400">
-                <span>&copy; {currentYear} JobBoard.</span>
+                <span>&copy; {currentYear} Workoura.</span>
                 <span>Made with</span>
                 <Heart className="w-4 h-4 text-red-500" />
                 <span>for job seekers worldwide.</span>
@@ -275,25 +279,25 @@ export default function Footer() {
               {/* Social Links */}
               <div className="flex items-center space-x-4">
                 <Link 
-                  href="https://facebook.com" 
+                  href="https://www.facebook.com/ali.farooq.1447342" 
                   className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors duration-300 group"
                 >
                   <Facebook className="w-5 h-5 text-gray-400 group-hover:text-white" />
                 </Link>
                 <Link 
-                  href="https://twitter.com" 
+                  href="https://x.com/AliFaro45370063" 
                   className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-400 transition-colors duration-300 group"
                 >
                   <Twitter className="w-5 h-5 text-gray-400 group-hover:text-white" />
                 </Link>
                 <Link 
-                  href="https://linkedin.com" 
+                  href="https://www.linkedin.com/in/ali-raza-4a5762282/" 
                   className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors duration-300 group"
                 >
                   <Linkedin className="w-5 h-5 text-gray-400 group-hover:text-white" />
                 </Link>
                 <Link 
-                  href="https://instagram.com" 
+                  href="https://www.instagram.com/its_zyrox_x/" 
                   className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 transition-all duration-300 group"
                 >
                   <Instagram className="w-5 h-5 text-gray-400 group-hover:text-white" />

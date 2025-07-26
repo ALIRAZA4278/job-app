@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { UserButton, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Briefcase, 
   Menu, 
   X, 
   Search, 
@@ -57,14 +57,14 @@ export default function Navbar() {
           >
             <Link href="/" className="flex items-center space-x-3 group">
               <div className="relative">
-                <div className="absolute inset-0 bg-blue-600 rounded-lg opacity-20 group-hover:opacity-30 transition-opacity"></div>
-                <Briefcase className="relative h-8 w-8 text-blue-600 group-hover:text-blue-700 transition-colors" />
-              </div>
-              <div>
-                <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                  JobBoard
-                </span>
-                <div className="text-xs text-gray-500 -mt-1">Find Your Dream Job</div>
+                <Image
+                  src="/Workoura Logo.png"
+                  alt="Workoura"
+                  width={140}
+                  height={40}
+                  className="h-10 w-auto group-hover:scale-105 transition-transform duration-200"
+                  priority
+                />
               </div>
             </Link>
           </motion.div>

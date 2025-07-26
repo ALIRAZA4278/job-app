@@ -73,7 +73,7 @@ export default function Home() {
                 </Link>
                 <button
                   onClick={handlePostJob}
-                  className="inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 font-semibold rounded-xl border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300"
+                  className="inline-flex items-center justify-center px-8 py-4  text-black font-semibold rounded-xl border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300"
                 >
                   Post a Job
                 </button>
@@ -454,7 +454,7 @@ export default function Home() {
                 className="group inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-blue-600 transition-all duration-300"
               >
                 Post Your Job
-                <Briefcase className="ml-2 w-5 h-5" />
+               
               </button>
             </div>
             

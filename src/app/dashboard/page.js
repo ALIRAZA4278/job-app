@@ -53,6 +53,12 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [showJobModal, setShowJobModal] = useState(false);
+  const [settings, setSettings] = useState({
+    emailNotifications: true,
+    jobAlerts: true,
+    profileVisibility: false,
+    twoFactorAuth: false
+  });
 
   useEffect(() => {
     if (isLoaded && !user) {
@@ -133,6 +139,24 @@ export default function DashboardPage() {
         toast.error("Failed to delete job");
       }
     }
+  };
+
+  const toggleSetting = (settingKey) => {
+    setSettings(prev => ({
+      ...prev,
+      [settingKey]: !prev[settingKey]
+    }));
+    
+    // Show toast notification
+    const settingNames = {
+      emailNotifications: "Email Notifications",
+      jobAlerts: "Job Alerts", 
+      profileVisibility: "Profile Visibility",
+      twoFactorAuth: "Two-Factor Authentication"
+    };
+    
+    const newValue = !settings[settingKey];
+    toast.success(`${settingNames[settingKey]} ${newValue ? 'enabled' : 'disabled'}`);
   };
 
   const getStatusColor = (status) => {
@@ -293,10 +317,10 @@ export default function DashboardPage() {
                   </span>
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold text-gray-900">
+                  <h1 className="text-3xl font-bold text-black">
                     Welcome back, {user.firstName}! 👋
                   </h1>
-                  <p className="text-gray-600 text-lg mt-1">
+                  <p className="text-black text-lg mt-1">
                     Ready to manage your career journey?
                   </p>
                 </div>
@@ -311,13 +335,7 @@ export default function DashboardPage() {
                   <Plus className="h-4 w-4" />
                   <span>Post Job</span>
                 </motion.button>
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="p-3 bg-gray-100 text-gray-600 rounded-xl hover:bg-gray-200 transition-all duration-200"
-                >
-                  <Bell className="h-4 w-4" />
-                </motion.button>
+                
               </div>
             </div>
           </div>
@@ -344,14 +362,21 @@ export default function DashboardPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                  className={`flex items-center px-4 py-1 rounded-xl font-medium transition-all duration-200 ${
                     activeTab === tab.id
-                      ? "bg-blue-600 text-white shadow-md"
-                      : "text-black hover:bg-gray-100"
+                      ? "bg-blue-600 !text-white shadow-md"
+                      : "text-white hover:bg-gray-100 hover:text-black"
                   }`}
                 >
                   <tab.icon className="h-4 w-4 mr-2" />
-                  {tab.label}
+                  <span onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center px-6 py-3  font-medium transition-all duration-200 ${
+                    activeTab === tab.id
+                      ? "bg-blue-600 !text-white "
+                      : "text-black hover:bg-gray-100 hover:text-black"
+                  }`}>
+                    {tab.label}
+                  </span>
                 </motion.button>
               ))}
             </div>
@@ -415,11 +440,11 @@ export default function DashboardPage() {
                     <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-600 mb-1">{stat.label}</p>
-                          <p className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</p>
+                          <p className="text-sm font-medium text-black mb-1">{stat.label}</p>
+                          <p className="text-3xl font-bold text-black mb-2">{stat.value}</p>
                           <div className="flex items-center">
                             <span className="text-sm text-emerald-600 font-medium">{stat.change}</span>
-                            <span className="text-xs text-gray-500 ml-1">vs last month</span>
+                            <span className="text-xs text-black ml-1">vs last month</span>
                           </div>
                         </div>
                         <div className={`p-3 rounded-xl bg-gradient-to-r ${stat.gradient} shadow-lg`}>
@@ -433,7 +458,7 @@ export default function DashboardPage() {
 
               {/* Quick Actions */}
               <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
-                <h3 className="text-xl font-bold text-gray-900 mb-6">Quick Actions</h3>
+                <h3 className="text-xl font-bold text-black mb-6">Quick Actions</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {[
                     {
@@ -448,14 +473,14 @@ export default function DashboardPage() {
                       description: "Search for potential candidates",
                       icon: Search,
                       gradient: "from-purple-500 to-purple-600",
-                      action: () => {}
+                      action: () => { router.push("/jobs")}
                     },
                     {
                       title: "Analytics",
                       description: "View detailed reports",
                       icon: TrendingUp,
                       gradient: "from-emerald-500 to-emerald-600",
-                      action: () => {}
+                      action: () => { router.push("/about")}
                     }
                   ].map((action, index) => (
                     <motion.button
@@ -478,53 +503,6 @@ export default function DashboardPage() {
                   ))}
                 </div>
               </div>
-
-              {/* Recent Activity */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Recent Applications</h3>
-                  <div className="space-y-3">
-                    {applications.slice(0, 3).map((app, index) => (
-                      <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                          <Briefcase className="h-4 w-4 text-blue-600" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium text-gray-900 truncate">{app.jobTitle}</p>
-                          <p className="text-sm text-gray-500">{app.companyName}</p>
-                        </div>
-                        <div className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(app.status)} text-white`}>
-                          {app.status}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Performance Insights</h3>
-                  <div className="space-y-4">
-                    {[
-                      { label: "Profile Views", value: "234", change: "+12%", icon: Eye },
-                      { label: "Application Rate", value: "78%", change: "+5%", icon: Target },
-                      { label: "Response Time", value: "2.4h", change: "-15%", icon: Zap }
-                    ].map((insight, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                            <insight.icon className="h-4 w-4 text-purple-600" />
-                          </div>
-                          <span className="font-medium text-gray-900">{insight.label}</span>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-bold text-gray-900">{insight.value}</p>
-                          <p className="text-xs text-emerald-600">{insight.change}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -539,15 +517,15 @@ export default function DashboardPage() {
             className="space-y-6"
           >
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">My Applications</h2>
+              <h2 className="text-2xl font-bold text-black">My Applications</h2>
               <div className="flex items-center space-x-3">
                 <motion.button 
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-all duration-200"
                 >
-                  <Filter className="h-4 w-4 mr-2 text-gray-600" />
-                  <span className="text-gray-700">Filter</span>
+                  <Filter className="h-4 w-4 mr-2 text-black" />
+                  <span className="text-black">Filter</span>
                 </motion.button>
               </div>
             </div>
@@ -560,10 +538,10 @@ export default function DashboardPage() {
                   className="bg-white rounded-2xl p-12 text-center border border-gray-200"
                 >
                   <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <FileText className="h-8 w-8 text-gray-400" />
+                    <FileText className="h-8 w-8 text-black" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No applications yet</h3>
-                  <p className="text-gray-600 mb-6">Start applying to jobs to see them here!</p>
+                  <h3 className="text-lg font-semibold text-black mb-2">No applications yet</h3>
+                  <p className="text-black mb-6">Start applying to jobs to see them here!</p>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -588,9 +566,9 @@ export default function DashboardPage() {
                             <Briefcase className="h-6 w-6 text-white" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-1">{application.jobTitle}</h3>
-                            <p className="text-gray-600 mb-3">{application.companyName}</p>
-                            <div className="flex items-center space-x-4 text-sm text-gray-500">
+                            <h3 className="text-lg font-semibold text-black mb-1">{application.jobTitle}</h3>
+                            <p className="text-black mb-3">{application.companyName}</p>
+                            <div className="flex items-center space-x-4 text-sm text-black">
                               <span className="flex items-center">
                                 <MapPin className="h-4 w-4 mr-1" />
                                 {application.location}
@@ -613,7 +591,7 @@ export default function DashboardPage() {
                           whileTap={{ scale: 0.9 }}
                           className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                         >
-                          <MoreVertical className="h-4 w-4 text-gray-400" />
+                          <MoreVertical className="h-4 w-4 text-black" />
                         </motion.button>
                       </div>
                     </div>
@@ -634,7 +612,7 @@ export default function DashboardPage() {
             className="space-y-6"
           >
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">My Jobs</h2>
+              <h2 className="text-2xl font-bold text-black">My Jobs</h2>
               <motion.button 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -654,10 +632,10 @@ export default function DashboardPage() {
                   className="bg-white rounded-2xl p-12 text-center border border-gray-200"
                 >
                   <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Briefcase className="h-8 w-8 text-gray-400" />
+                    <Briefcase className="h-8 w-8 text-black" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No jobs posted yet</h3>
-                  <p className="text-gray-600 mb-6">Create your first job posting to get started!</p>
+                  <h3 className="text-lg font-semibold text-black mb-2">No jobs posted yet</h3>
+                  <p className="text-black mb-6">Create your first job posting to get started!</p>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -683,9 +661,9 @@ export default function DashboardPage() {
                             <Briefcase className="h-6 w-6 text-white" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-1">{job.jobTitle || job.title}</h3>
-                            <p className="text-gray-600 mb-3">{job.companyName}</p>
-                            <div className="flex items-center space-x-4 text-sm text-gray-500 mb-3">
+                            <h3 className="text-lg font-semibold text-black mb-1">{job.jobTitle || job.title}</h3>
+                            <p className="text-black mb-3">{job.companyName}</p>
+                            <div className="flex items-center space-x-4 text-sm text-black mb-3">
                               <span className="flex items-center">
                                 <MapPin className="h-4 w-4 mr-1" />
                                 {job.location}
@@ -729,7 +707,7 @@ export default function DashboardPage() {
                           className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors group"
                           title="Edit Job"
                         >
-                          <Edit className="h-4 w-4 text-gray-600" />
+                          <Edit className="h-4 w-4 text-black" />
                         </motion.button>
                         <motion.button 
                           whileHover={{ scale: 1.1 }}
@@ -756,76 +734,76 @@ export default function DashboardPage() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
-            className="max-w-4xl"
+            className="space-y-6"
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Profile Info */}
               <div className="lg:col-span-2">
                 <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Profile Information</h2>
+                  <h2 className="text-2xl font-bold text-black mb-6">Profile Information</h2>
                   
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                      <div className="text-black">
+                        <label className="block text-sm font-medium text-black mb-2">First Name</label>
                         <input
                           type="text"
                           defaultValue={user.firstName}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all  placeholder-gray-500"
                         />
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                      <div className="text-black">
+                        <label className="block text-sm font-medium text-black mb-2">Last Name</label>
                         <input
                           type="text"
                           defaultValue={user.lastName}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-black placeholder-gray-500"
                         />
                       </div>
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <div className="text-black">
+                      <label className="block text-sm font-medium text-black mb-2">Email Address</label>
                       <input
                         type="email"
                         defaultValue={user.primaryEmailAddress?.emailAddress}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-black placeholder-gray-500"
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
-                      <select className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900">
+                    <div className="text-black">
+                      <label className="block text-sm font-medium text-black mb-2">Role</label>
+                      <select className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-black">
                         <option value="job_seeker">Job Seeker</option>
                         <option value="recruiter">Recruiter</option>
                         <option value="admin">Admin</option>
                       </select>
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Professional Bio</label>
+                    <div className="text-black">
+                      <label className="block text-sm font-medium text-black mb-2">Professional Bio</label>
                       <textarea
                         rows={4}
                         placeholder="Tell us about your professional background, skills, and career goals..."
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none text-gray-900 placeholder-black"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none text-black placeholder-gray-500"
                       ></textarea>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                        <label className="block text-sm font-medium text-black mb-2">Location</label>
                         <input
                           type="text"
                           placeholder="City, Country"
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 placeholder-black"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-black placeholder-gray-500"
                         />
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                      <div className="text-black">
+                        <label className="block text-sm font-medium text-black mb-2">Phone Number</label>
                         <input
                           type="tel"
                           placeholder="+1 (555) 123-4567"
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 placeholder-black"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-black placeholder-gray-500"
                         />
                       </div>
                     </div>
@@ -841,7 +819,7 @@ export default function DashboardPage() {
                       <motion.button 
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 font-medium"
+                        className="px-6 py-3 bg-gray-100 text-black rounded-xl hover:bg-gray-200 transition-all duration-200 font-medium"
                       >
                         Cancel
                       </motion.button>
@@ -859,20 +837,23 @@ export default function DashboardPage() {
                       {user.firstName?.[0]}{user.lastName?.[0]}
                     </span>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">{user.fullName}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{user.primaryEmailAddress?.emailAddress}</p>
+                  <h3 className="text-lg font-semibold text-black">{user.fullName}</h3>
+                  <p className="text-black text-sm mb-4">{user.primaryEmailAddress?.emailAddress}</p>
                   <motion.button 
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="text-blue-600 hover:text-blue-700 text-sm font-medium"
                   >
+                    <span className="text-black">
+
                     Change Photo
+                    </span>
                   </motion.button>
                 </div>
 
                 {/* Account Stats */}
                 <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Stats</h3>
+                  <h3 className="text-lg font-semibold text-black mb-4">Account Stats</h3>
                   <div className="space-y-4">
                     {[
                       { label: "Profile Views", value: "1,234", icon: Eye, color: "text-blue-600" },
@@ -885,9 +866,9 @@ export default function DashboardPage() {
                           <div className={`p-2 bg-gray-100 rounded-lg`}>
                             <stat.icon className={`h-4 w-4 ${stat.color}`} />
                           </div>
-                          <span className="text-gray-700 text-sm">{stat.label}</span>
+                          <span className="text-black text-sm">{stat.label}</span>
                         </div>
-                        <span className="font-semibold text-gray-900">{stat.value}</span>
+                        <span className="font-semibold text-black">{stat.value}</span>
                       </div>
                     ))}
                   </div>
@@ -895,23 +876,28 @@ export default function DashboardPage() {
 
                 {/* Quick Settings */}
                 <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Settings</h3>
+                  <h3 className="text-lg font-semibold text-black mb-4">Quick Settings</h3>
                   <div className="space-y-3">
                     {[
-                      { label: "Email Notifications", enabled: true },
-                      { label: "Job Alerts", enabled: true },
-                      { label: "Profile Visibility", enabled: false },
-                      { label: "Two-Factor Auth", enabled: false }
+                      { label: "Email Notifications", key: "emailNotifications", enabled: settings.emailNotifications },
+                      { label: "Job Alerts", key: "jobAlerts", enabled: settings.jobAlerts },
+                      { label: "Profile Visibility", key: "profileVisibility", enabled: settings.profileVisibility },
+                      { label: "Two-Factor Auth", key: "twoFactorAuth", enabled: settings.twoFactorAuth }
                     ].map((setting, index) => (
                       <div key={index} className="flex items-center justify-between">
-                        <span className="text-gray-700 text-sm">{setting.label}</span>
-                        <button className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                          setting.enabled ? 'bg-blue-600' : 'bg-gray-200'
-                        }`}>
-                          <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${
+                        <span className="text-black text-sm">{setting.label}</span>
+                        <motion.button 
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => toggleSetting(setting.key)}
+                          className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 ${
+                            setting.enabled ? 'bg-blue-600' : 'bg-gray-200'
+                          }`}
+                        >
+                          <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform duration-200 ${
                             setting.enabled ? 'translate-x-5' : 'translate-x-1'
                           }`} />
-                        </button>
+                        </motion.button>
                       </div>
                     ))}
                   </div>
