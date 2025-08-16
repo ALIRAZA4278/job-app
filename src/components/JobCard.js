@@ -37,7 +37,7 @@ export default function JobCard({ job, onApply, onBookmark, isBookmarked = false
       if (num >= 1000) return `${(num / 1000).toFixed(0)}K`;
       return num.toLocaleString();
     };
-    return `PKR ${formatNumber(min)} - ${formatNumber(max)}`;
+    return ` ${formatNumber(min)} - ${formatNumber(max)}`;
   };
 
   const getExperienceColor = (level) => {

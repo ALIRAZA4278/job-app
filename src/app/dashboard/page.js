@@ -675,7 +675,7 @@ export default function DashboardPage() {
                               {job.salaryMin && job.salaryMax && (
                                 <span className="flex items-center">
                                   <DollarSign className="h-4 w-4 mr-1" />
-                                  PKR {job.salaryMin.toLocaleString()} - {job.salaryMax.toLocaleString()}
+                                   {job.salaryMin.toLocaleString()} - {job.salaryMax.toLocaleString()}
                                 </span>
                               )}
                             </div>

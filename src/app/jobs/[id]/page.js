@@ -319,7 +319,7 @@ export default function JobDetailPage() {
                       </span>
                       <span className="flex items-center bg-gray-50 px-3 py-1 rounded-full">
                         <DollarSign className="h-4 w-4 mr-2 text-yellow-500" />
-                        PKR {job.salaryMin?.toLocaleString()} - {job.salaryMax?.toLocaleString()}
+                         {job.salaryMin?.toLocaleString()} - {job.salaryMax?.toLocaleString()}
                       </span>
                       <span className="flex items-center bg-gray-50 px-3 py-1 rounded-full">
                         <Eye className="h-4 w-4 mr-2 text-purple-500" />

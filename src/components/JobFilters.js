@@ -265,7 +265,7 @@ export default function JobFilters({ onFilterChange }) {
             <div className="mb-6">
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3">
                 <DollarSign className="w-4 h-4 text-green-600" />
-                Salary Range (PKR per month)
+                Salary Range (per month)
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="relative">
